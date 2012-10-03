@@ -21,5 +21,15 @@ namespace Reversi
         {
 
         }
+
+        private void ReversiForm_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void btStart_Click(object sender, EventArgs e)
+        {
+            this.Size = new Size(this.Width + 200, this.Height + 200);
+            pnReversi.Size = new Size(200, 200);
+        }
     }
 }
