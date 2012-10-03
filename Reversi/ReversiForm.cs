@@ -16,5 +16,10 @@ namespace Reversi
         {
             InitializeComponent();
         }
+
+        private void ReversiForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
