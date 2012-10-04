@@ -31,8 +31,8 @@
             this.nmBoardX = new System.Windows.Forms.NumericUpDown();
             this.nmBoardY = new System.Windows.Forms.NumericUpDown();
             this.gbControls = new System.Windows.Forms.GroupBox();
-            this.pnReversi = new System.Windows.Forms.Panel();
             this.btStart = new System.Windows.Forms.Button();
+            this.pnReversi = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.nmBoardX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmBoardY)).BeginInit();
             this.gbControls.SuspendLayout();
@@ -40,7 +40,7 @@
             // 
             // nmBoardX
             // 
-            this.nmBoardX.Location = new System.Drawing.Point(6, 121);
+            this.nmBoardX.Location = new System.Drawing.Point(6, 114);
             this.nmBoardX.Maximum = new decimal(new int[] {
             40,
             0,
@@ -62,7 +62,7 @@
             // 
             // nmBoardY
             // 
-            this.nmBoardY.Location = new System.Drawing.Point(132, 121);
+            this.nmBoardY.Location = new System.Drawing.Point(132, 114);
             this.nmBoardY.Maximum = new decimal(new int[] {
             40,
             0,
@@ -91,21 +91,10 @@
             this.gbControls.Controls.Add(this.nmBoardY);
             this.gbControls.Location = new System.Drawing.Point(13, 12);
             this.gbControls.Name = "gbControls";
-            this.gbControls.Size = new System.Drawing.Size(259, 147);
+            this.gbControls.Size = new System.Drawing.Size(259, 140);
             this.gbControls.TabIndex = 3;
             this.gbControls.TabStop = false;
             this.gbControls.Text = "New Game";
-            // 
-            // pnReversi
-            // 
-            this.pnReversi.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnReversi.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.pnReversi.Location = new System.Drawing.Point(13, 166);
-            this.pnReversi.Name = "pnReversi";
-            this.pnReversi.Size = new System.Drawing.Size(0, 0);
-            this.pnReversi.TabIndex = 4;
             // 
             // btStart
             // 
@@ -117,11 +106,21 @@
             this.btStart.UseVisualStyleBackColor = true;
             this.btStart.Click += new System.EventHandler(this.btStart_Click);
             // 
+            // pnReversi
+            // 
+            this.pnReversi.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.pnReversi.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.pnReversi.Location = new System.Drawing.Point(12, 158);
+            this.pnReversi.Name = "pnReversi";
+            this.pnReversi.Padding = new System.Windows.Forms.Padding(3);
+            this.pnReversi.Size = new System.Drawing.Size(0, 1);
+            this.pnReversi.TabIndex = 4;
+            // 
             // ReversiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 172);
+            this.ClientSize = new System.Drawing.Size(284, 173);
             this.Controls.Add(this.pnReversi);
             this.Controls.Add(this.gbControls);
             this.Name = "ReversiForm";

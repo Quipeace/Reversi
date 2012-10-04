@@ -12,6 +12,10 @@ namespace Reversi
 {
     public partial class ReversiForm : Form
     {
+        const int DEFAULT_GRID_SIZE = 100;
+
+        private ReversiGame currentGame;
+
         public ReversiForm()
         {
             InitializeComponent();
@@ -28,8 +32,8 @@ namespace Reversi
 
         private void btStart_Click(object sender, EventArgs e)
         {
-            this.Size = new Size(this.Width + 200, this.Height + 200);
-            pnReversi.Size = new Size(200, 200);
+            int[] boardSize = {(int) nmBoardX.Value, (int) nmBoardY.Value};
+            currentGame = new ReversiGame(boardSize);
         }
     }
 }
