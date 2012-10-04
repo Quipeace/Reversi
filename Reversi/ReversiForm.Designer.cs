@@ -30,9 +30,11 @@
         {
             this.nmBoardX = new System.Windows.Forms.NumericUpDown();
             this.nmBoardY = new System.Windows.Forms.NumericUpDown();
-            this.gbControls = new System.Windows.Forms.GroupBox();
             this.btStart = new System.Windows.Forms.Button();
-            this.pnReversi = new System.Windows.Forms.Panel();
+            this.btEndGame = new System.Windows.Forms.Button();
+            this.gbControls = new System.Windows.Forms.GroupBox();
+            this.gbControlsGame = new System.Windows.Forms.GroupBox();
+            this.lbGameInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nmBoardX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmBoardY)).BeginInit();
             this.gbControls.SuspendLayout();
@@ -40,7 +42,7 @@
             // 
             // nmBoardX
             // 
-            this.nmBoardX.Location = new System.Drawing.Point(6, 114);
+            this.nmBoardX.Location = new System.Drawing.Point(6, 121);
             this.nmBoardX.Maximum = new decimal(new int[] {
             40,
             0,
@@ -62,7 +64,7 @@
             // 
             // nmBoardY
             // 
-            this.nmBoardY.Location = new System.Drawing.Point(132, 114);
+            this.nmBoardY.Location = new System.Drawing.Point(132, 121);
             this.nmBoardY.Maximum = new decimal(new int[] {
             40,
             0,
@@ -82,20 +84,6 @@
             0,
             0});
             // 
-            // gbControls
-            // 
-            this.gbControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbControls.Controls.Add(this.btStart);
-            this.gbControls.Controls.Add(this.nmBoardX);
-            this.gbControls.Controls.Add(this.nmBoardY);
-            this.gbControls.Location = new System.Drawing.Point(13, 12);
-            this.gbControls.Name = "gbControls";
-            this.gbControls.Size = new System.Drawing.Size(259, 140);
-            this.gbControls.TabIndex = 3;
-            this.gbControls.TabStop = false;
-            this.gbControls.Text = "New Game";
-            // 
             // btStart
             // 
             this.btStart.Location = new System.Drawing.Point(7, 20);
@@ -106,22 +94,47 @@
             this.btStart.UseVisualStyleBackColor = true;
             this.btStart.Click += new System.EventHandler(this.btStart_Click);
             // 
-            // pnReversi
+            // btEndGame
             // 
-            this.pnReversi.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.pnReversi.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.pnReversi.Location = new System.Drawing.Point(12, 158);
-            this.pnReversi.Name = "pnReversi";
-            this.pnReversi.Padding = new System.Windows.Forms.Padding(3);
-            this.pnReversi.Size = new System.Drawing.Size(0, 1);
-            this.pnReversi.TabIndex = 4;
+            this.btEndGame.Location = new System.Drawing.Point(0, 0);
+            this.btEndGame.Name = "btEndGame";
+            this.btEndGame.Size = new System.Drawing.Size(75, 23);
+            this.btEndGame.TabIndex = 0;
+            // 
+            // gbControls
+            // 
+            this.gbControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbControls.Controls.Add(this.btStart);
+            this.gbControls.Controls.Add(this.nmBoardX);
+            this.gbControls.Controls.Add(this.nmBoardY);
+            this.gbControls.Location = new System.Drawing.Point(13, 12);
+            this.gbControls.Name = "gbControls";
+            this.gbControls.Size = new System.Drawing.Size(259, 147);
+            this.gbControls.TabIndex = 3;
+            this.gbControls.TabStop = false;
+            this.gbControls.Text = "New Game";
+            // 
+            // gbControlsGame
+            // 
+            this.gbControlsGame.Location = new System.Drawing.Point(0, 0);
+            this.gbControlsGame.Name = "gbControlsGame";
+            this.gbControlsGame.Size = new System.Drawing.Size(200, 100);
+            this.gbControlsGame.TabIndex = 0;
+            this.gbControlsGame.TabStop = false;
+            // 
+            // lbGameInfo
+            // 
+            this.lbGameInfo.Location = new System.Drawing.Point(0, 0);
+            this.lbGameInfo.Name = "lbGameInfo";
+            this.lbGameInfo.Size = new System.Drawing.Size(100, 23);
+            this.lbGameInfo.TabIndex = 0;
             // 
             // ReversiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 173);
-            this.Controls.Add(this.pnReversi);
             this.Controls.Add(this.gbControls);
             this.Name = "ReversiForm";
             this.Text = "Reversi";
@@ -135,10 +148,9 @@
 
         #endregion
 
-        private System.Windows.Forms.NumericUpDown nmBoardX;
         private System.Windows.Forms.NumericUpDown nmBoardY;
-        private System.Windows.Forms.GroupBox gbControls;
+        private System.Windows.Forms.NumericUpDown nmBoardX;
         private System.Windows.Forms.Button btStart;
-        private System.Windows.Forms.Panel pnReversi;
+        private System.Windows.Forms.GroupBox gbControls;
     }
 }
