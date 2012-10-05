@@ -55,7 +55,7 @@ namespace Reversi
                     currentPlayer = PLAYER_1;
                 }
 
-                checkValidMoves(clickPos[0], clickPos[1]);
+                initValidMoves();
             }
         }
 
@@ -68,10 +68,6 @@ namespace Reversi
                     if (board[x, y] == STONE_BLUE || board[x, y] == STONE_RED)
                     {
                         checkValidMoves(x, y);
-                    }
-                    else
-                    {
-                        //board[x, y] = STONE_EMPTY;
                     }
                 }
             }
@@ -99,12 +95,90 @@ namespace Reversi
                     }
                     else
                     {
-                        // TODO uitrekenen insluiten andere stenen
-                        board[x + i, y + n] = STONE_VALID;
+                        if (isValidMove(x + i, y + n))
+                        {
+                            board[x + i, y + n] = STONE_VALID;
+                        }
+                        else
+                        {
+                            board[x + i, y + n] = STONE_EMPTY;
+                        }
                     }
                 }
             }
             return true;
+        }
+
+        private Boolean isValidMove(int x, int y)
+        {
+            Boolean leftHorizValid = false;
+            for (int i = x; i > 0; i--)
+            {
+                int currentStone = board[i, y];
+                if (i == x - 1 && currentStone == currentPlayer)
+                {
+                    break;
+                }
+                else if (currentStone == currentPlayer)
+                {
+                    leftHorizValid = true;
+                    break;
+                }
+            }
+
+            Boolean rightHorizValid = false;
+            for (int i = x; i < boardSize; i++)
+            {
+                int currentStone = board[i, y];
+                if (i == x + 1 && currentStone == currentPlayer)
+                {
+                    break;
+                }
+                else if (currentStone == currentPlayer)
+                {
+                    rightHorizValid = true;
+                    break;
+                }
+            }
+
+            Boolean bottomVerticalValid = false;
+            for (int i = y; i < boardSize; i++)
+            {
+                int currentStone = board[x, i];
+                if (i == y + 1 && currentStone == currentPlayer)
+                {
+                    break;
+                }
+                else if (currentStone == currentPlayer)
+                {
+                    bottomVerticalValid = true;
+                    break;
+                }
+            }
+
+            Boolean topVerticalValid = false;
+            for (int i = y; i > 0; i--)
+            {
+                int currentStone = board[x, i];
+                if (i == y - 1 && currentStone == currentPlayer)
+                {
+                    break;
+                }
+                else if (currentStone == currentPlayer)
+                {
+                    topVerticalValid = true;
+                    break;
+                }
+            }
+
+            if (leftHorizValid || rightHorizValid || bottomVerticalValid || topVerticalValid)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

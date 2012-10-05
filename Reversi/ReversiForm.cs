@@ -72,24 +72,26 @@ namespace Reversi
                 for (int y = 0; y < currentGame.boardSize; y++)
                 {
                     int currentPosition = currentGame.board[x, y];
-                    if (currentPosition != 0)
-                    {
-                        int circleX = (int) (x * currentGame.gridSize);
-                        int circleY = (int) (y * currentGame.gridSize);
+                        int circleX = (int) (x * currentGame.gridSize) + 2;
+                        int circleY = (int) (y * currentGame.gridSize) + 2;
+                        int circleDiameter = (int)currentGame.gridSize - 4;
+
 
                         switch (currentPosition)
                         {
                         case ReversiGame.STONE_VALID:
-                                currentGraphics.FillEllipse(Brushes.Black, circleX, circleY, (int)currentGame.gridSize, (int)currentGame.gridSize);
+                                currentGraphics.FillEllipse(Brushes.Black, circleX, circleY, circleDiameter, circleDiameter);
+                                break;
+                        case ReversiGame.STONE_EMPTY:
+                                currentGraphics.FillRectangle(Brushes.White, circleX - 1, circleY - 1, circleDiameter + 2, circleDiameter + 2);
                                 break;
                         case ReversiGame.STONE_BLUE:
-                                currentGraphics.FillEllipse(Brushes.Blue, circleX, circleY, (int) currentGame.gridSize, (int) currentGame.gridSize);
+                                currentGraphics.FillEllipse(Brushes.Blue, circleX, circleY, circleDiameter, circleDiameter);
                             break;
                         case ReversiGame.STONE_RED:
-                                currentGraphics.FillEllipse(Brushes.Red, circleX, circleY, (int) currentGame.gridSize, (int) currentGame.gridSize);
+                            currentGraphics.FillEllipse(Brushes.Red, circleX, circleY, circleDiameter, circleDiameter);
                             break;
                         }
-                    }
                 }
             }
         }
