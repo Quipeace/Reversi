@@ -12,8 +12,6 @@ namespace Reversi
 {
     public partial class ReversiForm : Form
     {
-        const int DEFAULT_GRID_SIZE = 100;
-
         private ReversiGame currentGame;
 
         public ReversiForm()
@@ -38,14 +36,35 @@ namespace Reversi
             this.gbInGameControls.Visible = true;
             this.gbPreGameControls.Visible = false;
 
-            this.Size = new Size(this.Width + 200, this.Height + 200);
+            this.Size = new Size(540, 725);
+            pnBoard.Size = new Size(500, 500);
+
+            drawGrid();
         }
 
         private void btEndGame_Click(object sender, EventArgs e)
         {
             this.gbPreGameControls.Visible = true;
             this.gbInGameControls.Visible = false;
-            this.Size = new Size(300, 200);
+
+            this.Size = new Size(300, 210);
+        }
+
+        private void drawGrid()
+        {
+            Graphics currentGraphics = pnBoard.CreateGraphics();
+            currentGraphics.Clear(Color.White);
+
+            for (int x = 1; x < currentGame.boardSize[0]; x++)
+            {
+                Point startPoint = new Point(x * currentGame.gridSize, 0);
+                Point endPoint = new Point(x * currentGame.gridSize, 500);
+
+                currentGraphics.DrawLine(Pens.Black, startPoint, endPoint); 
+            }
+            for (int y = 1; y < currentGame.boardSize[1]; y++)
+            {
+            }
         }
     }
 }

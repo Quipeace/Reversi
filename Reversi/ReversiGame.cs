@@ -7,12 +7,16 @@ namespace Reversi
 {
     class ReversiGame
     {
-        int[,] board;
+        public int gridSize;
+        public int[] boardSize;
+        public int[,] board;
 
-        public ReversiGame(int[] bordSize)
+        public ReversiGame(int[] boardSize)
         {
-            board = new int[bordSize[0], bordSize[1]];
+            this.boardSize = boardSize;
+            this.board = new int[boardSize[0], boardSize[1]];
 
+            this.gridSize = 500 / boardSize[0];
         }
     }
 }

@@ -34,6 +34,7 @@
             this.gbPreGameControls = new System.Windows.Forms.GroupBox();
             this.gbInGameControls = new System.Windows.Forms.GroupBox();
             this.btEndGame = new System.Windows.Forms.Button();
+            this.pnBoard = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.nmBoardX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmBoardY)).BeginInit();
             this.gbPreGameControls.SuspendLayout();
@@ -49,7 +50,7 @@
             0,
             0});
             this.nmBoardX.Minimum = new decimal(new int[] {
-            3,
+            4,
             0,
             0,
             0});
@@ -57,7 +58,7 @@
             this.nmBoardX.Size = new System.Drawing.Size(120, 20);
             this.nmBoardX.TabIndex = 1;
             this.nmBoardX.Value = new decimal(new int[] {
-            3,
+            4,
             0,
             0,
             0});
@@ -71,7 +72,7 @@
             0,
             0});
             this.nmBoardY.Minimum = new decimal(new int[] {
-            3,
+            4,
             0,
             0,
             0});
@@ -79,7 +80,7 @@
             this.nmBoardY.Size = new System.Drawing.Size(121, 20);
             this.nmBoardY.TabIndex = 2;
             this.nmBoardY.Value = new decimal(new int[] {
-            3,
+            4,
             0,
             0,
             0});
@@ -96,8 +97,8 @@
             // 
             // gbPreGameControls
             // 
-            this.gbPreGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbPreGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbPreGameControls.Controls.Add(this.btStart);
             this.gbPreGameControls.Controls.Add(this.nmBoardX);
             this.gbPreGameControls.Controls.Add(this.nmBoardY);
@@ -110,8 +111,8 @@
             // 
             // gbInGameControls
             // 
-            this.gbInGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbInGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbInGameControls.Controls.Add(this.btEndGame);
             this.gbInGameControls.Location = new System.Drawing.Point(12, 12);
             this.gbInGameControls.Name = "gbInGameControls";
@@ -131,11 +132,19 @@
             this.btEndGame.UseVisualStyleBackColor = true;
             this.btEndGame.Click += new System.EventHandler(this.btEndGame_Click);
             // 
+            // pnBoard
+            // 
+            this.pnBoard.Location = new System.Drawing.Point(12, 174);
+            this.pnBoard.Name = "pnBoard";
+            this.pnBoard.Size = new System.Drawing.Size(200, 100);
+            this.pnBoard.TabIndex = 5;
+            // 
             // ReversiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 173);
+            this.ClientSize = new System.Drawing.Size(284, 171);
+            this.Controls.Add(this.pnBoard);
             this.Controls.Add(this.gbInGameControls);
             this.Controls.Add(this.gbPreGameControls);
             this.Name = "ReversiForm";
@@ -157,5 +166,6 @@
         private System.Windows.Forms.GroupBox gbPreGameControls;
         private System.Windows.Forms.GroupBox gbInGameControls;
         private System.Windows.Forms.Button btEndGame;
+        private System.Windows.Forms.Panel pnBoard;
     }
 }
