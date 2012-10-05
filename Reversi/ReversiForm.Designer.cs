@@ -116,7 +116,7 @@
             this.pnBoard.Name = "pnBoard";
             this.pnBoard.Size = new System.Drawing.Size(200, 100);
             this.pnBoard.TabIndex = 5;
-            this.pnBoard.Click += new System.EventHandler(this.pnBoard_Click);
+            this.pnBoard.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnBoard_MouseClick);
             // 
             // ReversiForm
             // 

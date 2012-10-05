@@ -22,8 +22,7 @@ namespace Reversi
 
         private void btStart_Click(object sender, EventArgs e)
         {
-            int[] boardSize = {(int)tbBoardSize.Value, (int)tbBoardSize.Value};
-            currentGame = new ReversiGame(boardSize);
+            currentGame = new ReversiGame((int)tbBoardSize.Value);
 
             this.gbInGameControls.Visible = true;
             this.gbPreGameControls.Visible = false;
@@ -50,14 +49,14 @@ namespace Reversi
         {
             currentGraphics.Clear(Color.White);
 
-            for (double x = 1; x < currentGame.boardSize[0]; x++)
+            for (double x = 1; x < currentGame.boardSize; x++)
             {
                 Point startPoint = new Point((int) (x * currentGame.gridSize), 0);
                 Point endPoint = new Point((int) (x * currentGame.gridSize), 500);
 
                 currentGraphics.DrawLine(Pens.Black, startPoint, endPoint); 
             }
-            for (double y = 1; y < currentGame.boardSize[1]; y++)
+            for (double y = 1; y < currentGame.boardSize; y++)
             {
                 Point startPoint = new Point(0, (int)(y * currentGame.gridSize));
                 Point endPoint = new Point(500, (int)(y * currentGame.gridSize));
@@ -68,9 +67,9 @@ namespace Reversi
 
         private void drawStones()
         {
-            for (int x = 0; x < currentGame.boardSize[0]; x++)
+            for (int x = 0; x < currentGame.boardSize; x++)
             {
-                for (int y = 0; y < currentGame.boardSize[0]; y++)
+                for (int y = 0; y < currentGame.boardSize; y++)
                 {
                     int currentPosition = currentGame.board[x, y];
                     if (currentPosition != 0)
@@ -80,11 +79,14 @@ namespace Reversi
 
                         switch (currentPosition)
                         {
+                        case ReversiGame.STONE_VALID:
+                                currentGraphics.FillEllipse(Brushes.Black, circleX, circleY, (int)currentGame.gridSize, (int)currentGame.gridSize);
+                                break;
                         case ReversiGame.STONE_BLUE:
                                 currentGraphics.FillEllipse(Brushes.Blue, circleX, circleY, (int) currentGame.gridSize, (int) currentGame.gridSize);
                             break;
                         case ReversiGame.STONE_RED:
-                            currentGraphics.FillEllipse(Brushes.Red, circleX, circleY, (int) currentGame.gridSize, (int) currentGame.gridSize);
+                                currentGraphics.FillEllipse(Brushes.Red, circleX, circleY, (int) currentGame.gridSize, (int) currentGame.gridSize);
                             break;
                         }
                     }
@@ -101,9 +103,13 @@ namespace Reversi
             }
         }
 
-        private void pnBoard_Click(object sender, EventArgs e)
+        private void pnBoard_MouseClick(object sender, MouseEventArgs e)
         {
+            int[] gridPos = {(int)(e.X / currentGame.gridSize), (int)(e.Y / currentGame.gridSize)};
 
+            currentGame.processTurn(gridPos);
+
+            drawStones();
         }
     }
 }
