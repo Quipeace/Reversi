@@ -12,6 +12,7 @@ namespace Reversi
         public ReversiGame(int[] bordSize)
         {
             board = new int[bordSize[0], bordSize[1]];
+
         }
     }
 }
