@@ -28,62 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.nmBoardX = new System.Windows.Forms.NumericUpDown();
-            this.nmBoardY = new System.Windows.Forms.NumericUpDown();
             this.btStart = new System.Windows.Forms.Button();
             this.gbPreGameControls = new System.Windows.Forms.GroupBox();
+            this.lbBoardSize = new System.Windows.Forms.Label();
+            this.tbBoardSize = new System.Windows.Forms.TrackBar();
             this.gbInGameControls = new System.Windows.Forms.GroupBox();
             this.btEndGame = new System.Windows.Forms.Button();
             this.pnBoard = new System.Windows.Forms.Panel();
-            ((System.ComponentModel.ISupportInitialize)(this.nmBoardX)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmBoardY)).BeginInit();
             this.gbPreGameControls.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbBoardSize)).BeginInit();
             this.gbInGameControls.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // nmBoardX
-            // 
-            this.nmBoardX.Location = new System.Drawing.Point(6, 121);
-            this.nmBoardX.Maximum = new decimal(new int[] {
-            40,
-            0,
-            0,
-            0});
-            this.nmBoardX.Minimum = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
-            this.nmBoardX.Name = "nmBoardX";
-            this.nmBoardX.Size = new System.Drawing.Size(120, 20);
-            this.nmBoardX.TabIndex = 1;
-            this.nmBoardX.Value = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
-            // 
-            // nmBoardY
-            // 
-            this.nmBoardY.Location = new System.Drawing.Point(132, 121);
-            this.nmBoardY.Maximum = new decimal(new int[] {
-            40,
-            0,
-            0,
-            0});
-            this.nmBoardY.Minimum = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
-            this.nmBoardY.Name = "nmBoardY";
-            this.nmBoardY.Size = new System.Drawing.Size(121, 20);
-            this.nmBoardY.TabIndex = 2;
-            this.nmBoardY.Value = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
             // 
             // btStart
             // 
@@ -99,15 +54,38 @@
             // 
             this.gbPreGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbPreGameControls.Controls.Add(this.lbBoardSize);
+            this.gbPreGameControls.Controls.Add(this.tbBoardSize);
             this.gbPreGameControls.Controls.Add(this.btStart);
-            this.gbPreGameControls.Controls.Add(this.nmBoardX);
-            this.gbPreGameControls.Controls.Add(this.nmBoardY);
-            this.gbPreGameControls.Location = new System.Drawing.Point(13, 12);
+            this.gbPreGameControls.Location = new System.Drawing.Point(12, 12);
             this.gbPreGameControls.Name = "gbPreGameControls";
-            this.gbPreGameControls.Size = new System.Drawing.Size(259, 147);
+            this.gbPreGameControls.Size = new System.Drawing.Size(260, 147);
             this.gbPreGameControls.TabIndex = 3;
             this.gbPreGameControls.TabStop = false;
             this.gbPreGameControls.Text = "New Game";
+            // 
+            // lbBoardSize
+            // 
+            this.lbBoardSize.AutoSize = true;
+            this.lbBoardSize.Location = new System.Drawing.Point(118, 128);
+            this.lbBoardSize.Name = "lbBoardSize";
+            this.lbBoardSize.Size = new System.Drawing.Size(13, 13);
+            this.lbBoardSize.TabIndex = 4;
+            this.lbBoardSize.Text = "4";
+            // 
+            // tbBoardSize
+            // 
+            this.tbBoardSize.LargeChange = 4;
+            this.tbBoardSize.Location = new System.Drawing.Point(6, 96);
+            this.tbBoardSize.Maximum = 40;
+            this.tbBoardSize.Minimum = 4;
+            this.tbBoardSize.Name = "tbBoardSize";
+            this.tbBoardSize.Size = new System.Drawing.Size(247, 45);
+            this.tbBoardSize.SmallChange = 2;
+            this.tbBoardSize.TabIndex = 2;
+            this.tbBoardSize.TickFrequency = 2;
+            this.tbBoardSize.Value = 4;
+            this.tbBoardSize.ValueChanged += new System.EventHandler(this.tbBoardSize_ValueChanged);
             // 
             // gbInGameControls
             // 
@@ -138,21 +116,21 @@
             this.pnBoard.Name = "pnBoard";
             this.pnBoard.Size = new System.Drawing.Size(200, 100);
             this.pnBoard.TabIndex = 5;
+            this.pnBoard.Click += new System.EventHandler(this.pnBoard_Click);
             // 
             // ReversiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 171);
-            this.Controls.Add(this.pnBoard);
             this.Controls.Add(this.gbInGameControls);
+            this.Controls.Add(this.pnBoard);
             this.Controls.Add(this.gbPreGameControls);
             this.Name = "ReversiForm";
             this.Text = "Reversi";
-            this.Load += new System.EventHandler(this.ReversiForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.nmBoardX)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nmBoardY)).EndInit();
             this.gbPreGameControls.ResumeLayout(false);
+            this.gbPreGameControls.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbBoardSize)).EndInit();
             this.gbInGameControls.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -160,12 +138,12 @@
 
         #endregion
 
-        private System.Windows.Forms.NumericUpDown nmBoardY;
-        private System.Windows.Forms.NumericUpDown nmBoardX;
         private System.Windows.Forms.Button btStart;
         private System.Windows.Forms.GroupBox gbPreGameControls;
         private System.Windows.Forms.GroupBox gbInGameControls;
         private System.Windows.Forms.Button btEndGame;
         private System.Windows.Forms.Panel pnBoard;
+        private System.Windows.Forms.TrackBar tbBoardSize;
+        private System.Windows.Forms.Label lbBoardSize;
     }
 }

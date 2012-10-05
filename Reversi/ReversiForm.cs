@@ -13,24 +13,16 @@ namespace Reversi
     public partial class ReversiForm : Form
     {
         private ReversiGame currentGame;
+        private Graphics currentGraphics;
 
         public ReversiForm()
         {
             InitializeComponent();
         }
 
-        private void ReversiForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ReversiForm_Click(object sender, EventArgs e)
-        {
-        }
-
         private void btStart_Click(object sender, EventArgs e)
         {
-            int[] boardSize = { (int)nmBoardX.Value, (int)nmBoardY.Value };
+            int[] boardSize = {(int)tbBoardSize.Value, (int)tbBoardSize.Value};
             currentGame = new ReversiGame(boardSize);
 
             this.gbInGameControls.Visible = true;
@@ -39,7 +31,11 @@ namespace Reversi
             this.Size = new Size(540, 725);
             pnBoard.Size = new Size(500, 500);
 
+            currentGraphics = pnBoard.CreateGraphics();
+            currentGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
             drawGrid();
+            drawStones();
         }
 
         private void btEndGame_Click(object sender, EventArgs e)
@@ -52,19 +48,62 @@ namespace Reversi
 
         private void drawGrid()
         {
-            Graphics currentGraphics = pnBoard.CreateGraphics();
             currentGraphics.Clear(Color.White);
 
-            for (int x = 1; x < currentGame.boardSize[0]; x++)
+            for (double x = 1; x < currentGame.boardSize[0]; x++)
             {
-                Point startPoint = new Point(x * currentGame.gridSize, 0);
-                Point endPoint = new Point(x * currentGame.gridSize, 500);
+                Point startPoint = new Point((int) (x * currentGame.gridSize), 0);
+                Point endPoint = new Point((int) (x * currentGame.gridSize), 500);
 
                 currentGraphics.DrawLine(Pens.Black, startPoint, endPoint); 
             }
-            for (int y = 1; y < currentGame.boardSize[1]; y++)
+            for (double y = 1; y < currentGame.boardSize[1]; y++)
             {
+                Point startPoint = new Point(0, (int)(y * currentGame.gridSize));
+                Point endPoint = new Point(500, (int)(y * currentGame.gridSize));
+
+                currentGraphics.DrawLine(Pens.Black, startPoint, endPoint); 
             }
+        }
+
+        private void drawStones()
+        {
+            for (int x = 0; x < currentGame.boardSize[0]; x++)
+            {
+                for (int y = 0; y < currentGame.boardSize[0]; y++)
+                {
+                    int currentPosition = currentGame.board[x, y];
+                    if (currentPosition != 0)
+                    {
+                        int circleX = (int) (x * currentGame.gridSize);
+                        int circleY = (int) (y * currentGame.gridSize);
+
+                        switch (currentPosition)
+                        {
+                        case ReversiGame.STONE_BLUE:
+                                currentGraphics.FillEllipse(Brushes.Blue, circleX, circleY, (int) currentGame.gridSize, (int) currentGame.gridSize);
+                            break;
+                        case ReversiGame.STONE_RED:
+                            currentGraphics.FillEllipse(Brushes.Red, circleX, circleY, (int) currentGame.gridSize, (int) currentGame.gridSize);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void tbBoardSize_ValueChanged(object sender, EventArgs e)
+        {
+            lbBoardSize.Text = tbBoardSize.Value.ToString();
+            if (tbBoardSize.Value % 2 != 0)
+            {
+                tbBoardSize.Value += 1;
+            }
+        }
+
+        private void pnBoard_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
