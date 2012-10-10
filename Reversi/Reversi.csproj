@@ -54,6 +54,7 @@
     <Compile Include="ReversiForm.Designer.cs">
       <DependentUpon>ReversiForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ReversiPlayer.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

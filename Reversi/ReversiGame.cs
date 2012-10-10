@@ -12,11 +12,13 @@ namespace Reversi
         public const int STONE_BLUE = 1;
         public const int STONE_RED = 2;
 
+        public const int MAX_PLAYERS = 2;
         public const int PLAYER_1 = 1;
         public const int PLAYER_2 = 2;
 
+
+        public ReversiPlayer[] players = new ReversiPlayer[MAX_PLAYERS + 1];
         public int currentPlayer;
-        public int maxPlayers;
 
         public double gridSize;
         public int boardSize;
@@ -30,7 +32,9 @@ namespace Reversi
             this.gridSize = 500 / (double) boardSize ;
 
             currentPlayer = PLAYER_1;
-            maxPlayers = PLAYER_2;
+            players[PLAYER_1] = new ReversiPlayer();
+            players[PLAYER_2] = new ReversiPlayer();
+
 
             int posXFirst = boardSize / 2;
             int posYFirst = boardSize / 2;
@@ -49,10 +53,12 @@ namespace Reversi
             if (gridValue == STONE_VALID)                           // Als de positie een geldige zet is voor deze speler
             {
                 board[clickPos[0], clickPos[1]] = currentPlayer;    // Huidige positie heeft nu de steen van de speler
+                players[currentPlayer].stones++;
+
                 finishTurn(clickPos[0], clickPos[1]);
 
                 currentPlayer++;                                    // Volgende speler
-                if (currentPlayer > maxPlayers)                     // Als deze speler niet meedoet, terug naar de eerste
+                if (currentPlayer > MAX_PLAYERS)                     // Als deze speler niet meedoet, terug naar de eerste
                 {
                     currentPlayer = PLAYER_1;
                 }
@@ -105,43 +111,37 @@ namespace Reversi
                 {
                     if (board[x, y] > 0)                // als het een daadwerkelijke steen is
                     {
-                        checkValidMoves(x, y);          // Mogelijke zetten rond deze steen berekenen
+                        checkValidMovesAround(x, y);          // Mogelijke zetten rond deze steen berekenen
                     }
                 }
             }
         }
 
-        private Boolean checkValidMoves(int x, int y)
+        private Boolean checkValidMovesAround(int x, int y)
         {
             for (int i = -1; i <= 1; i++)                   // x-offset
             {
-                if (x + i < 0 || x + i >= boardSize)        // Als de huidige positie buiten het bord valt, deze berekening overslaan
-                {
-                    continue;
-                }
-
                 for (int n = -1; n <= 1; n++)               // y-offset
                 {
-                    if (y + n < 0 || y + n >= boardSize)    // Als de huidige positie buiten het bord valt, deze berekening overslaan
+                    try
+                    {
+                        if (board[x + i, y + n] > 0)            // Deze positie is al bezet, doorgaan
+                        {
+                            continue;
+                        }
+                    }
+                    catch(IndexOutOfRangeException)
                     {
                         continue;
                     }
 
-                    if (board[x + i, y + n] > 0)            // Deze positie is al bezet, doorgaan
+                    if (isValidMove(x + i, y + n))      // Deze zet is voor de huidige speler een geldige zet
                     {
-                        continue;
+                        board[x + i, y + n] = STONE_VALID;
                     }
-                    else
+                    else                                // Zo niet, is de positie leeg (geen hint-steen)
                     {
-                        if (isValidMove(x + i, y + n))      // Deze zet is voor de huidige speler een geldige zet
-                        {
-                            board[x + i, y + n] = STONE_VALID;
-                        }
-                        else                                // Zo niet, is de positie leeg (geen hint-steen)
-                        {
-                            board[x + i, y + n] = STONE_EMPTY;                      
-                        }
- 
+                        board[x + i, y + n] = STONE_EMPTY;                      
                     }
                 }
             }
@@ -190,9 +190,10 @@ namespace Reversi
 
         private bool isLeftValid(int x, int y, bool setStone)
         {
-            for (int i = x - 1; i > 0; i--)                         // Naar links
+            for (int i = x - 1; i >= 0; i--)                         // Naar links
             {
                 int currentStone = board[i, y];
+
                 if (i == x - 1 && currentStone == currentPlayer)    // Als de steen op de deze positie al van de speler is, geen geldige zet
                 {
                     break;
@@ -207,7 +208,7 @@ namespace Reversi
                 }
                 else if (setStone)                                  // Als setStone true is tussenliggende stenen al zetten
                 {
-                    board[i, y] = currentPlayer;
+                    setStoneAt(i, y, currentStone);
                 }
             }
             return false;
@@ -231,14 +232,14 @@ namespace Reversi
                 }
                 else if (setStone)
                 {
-                    board[i, y] = currentPlayer;
+                    setStoneAt(i, y, currentStone);
                 }
             }
             return false;
         }
         private bool isUpValid(int x, int y, bool setStone)
         {
-            for (int i = y - 1; i > 0; i--)                         // Omhoog
+            for (int i = y - 1; i >= 0; i--)                         // Omhoog
             {
                 int currentStone = board[x, i];
                 if (i == y - 1 && currentStone == currentPlayer)
@@ -255,7 +256,7 @@ namespace Reversi
                 }
                 else if (setStone)
                 {
-                    board[x, i] = currentPlayer;
+                    setStoneAt(x, i, currentStone);
                 }
             }
             return false;
@@ -279,7 +280,7 @@ namespace Reversi
                 }
                 else if (setStone)
                 {
-                    board[x, i] = currentPlayer;
+                    setStoneAt(x, i, currentStone);
                 }
             }
             return false;
@@ -307,7 +308,7 @@ namespace Reversi
                 }
                 else if (setStone)
                 {
-                    board[x - i, y - i] = currentPlayer;
+                    setStoneAt(x - i, y - i, currentStone);
                 }
             }
             return false;
@@ -335,7 +336,7 @@ namespace Reversi
                 }
                 else if (setStone)
                 {
-                    board[x + i, y - i] = currentPlayer;
+                    setStoneAt(x + i, y - i, currentStone);
                 }
             }
             return false;
@@ -363,7 +364,7 @@ namespace Reversi
                 }
                 else if (setStone)
                 {
-                    board[x - i, y + i] = currentPlayer;
+                    setStoneAt(x - i, y + i, currentStone);
                 }
             }
             return false;
@@ -383,7 +384,6 @@ namespace Reversi
                 }
                 else if (currentStone < 0)
                 {
-                    Console.WriteLine("EMPTY AT : " + (x + i) + ", " + (y + i));
                     break;
                 }
                 else if (currentStone == currentPlayer)
@@ -392,10 +392,17 @@ namespace Reversi
                 }
                 else if (setStone)
                 {
-                    board[x + i, y + i] = currentPlayer;
+                    setStoneAt(x + i, y + i, currentStone);
                 }
             }
             return false;
+        }
+
+        private void setStoneAt(int x, int y, int stoneAt)
+        {
+            board[x, y] = currentPlayer;
+            players[currentPlayer].stones++;
+            players[stoneAt].stones--;
         }
     }
 }

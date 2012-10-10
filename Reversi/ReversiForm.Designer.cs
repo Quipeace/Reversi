@@ -35,6 +35,8 @@
             this.gbInGameControls = new System.Windows.Forms.GroupBox();
             this.btEndGame = new System.Windows.Forms.Button();
             this.pnBoard = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.gbPreGameControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbBoardSize)).BeginInit();
             this.gbInGameControls.SuspendLayout();
@@ -91,6 +93,8 @@
             // 
             this.gbInGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbInGameControls.Controls.Add(this.label2);
+            this.gbInGameControls.Controls.Add(this.label1);
             this.gbInGameControls.Controls.Add(this.btEndGame);
             this.gbInGameControls.Location = new System.Drawing.Point(12, 12);
             this.gbInGameControls.Name = "gbInGameControls";
@@ -118,6 +122,24 @@
             this.pnBoard.TabIndex = 5;
             this.pnBoard.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnBoard_MouseClick);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(8, 50);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "label1";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(11, 67);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "label2";
+            // 
             // ReversiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -132,6 +154,7 @@
             this.gbPreGameControls.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbBoardSize)).EndInit();
             this.gbInGameControls.ResumeLayout(false);
+            this.gbInGameControls.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -145,5 +168,7 @@
         private System.Windows.Forms.Panel pnBoard;
         private System.Windows.Forms.TrackBar tbBoardSize;
         private System.Windows.Forms.Label lbBoardSize;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
