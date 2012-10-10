@@ -121,27 +121,30 @@ namespace Reversi
         {
             for (int i = -1; i <= 1; i++)                   // x-offset
             {
+                if (x + i < 0 || x + i >= boardSize)        // Als de huidige positie buiten het bord valt, deze berekening overslaan
+                {
+                    continue;
+                }
                 for (int n = -1; n <= 1; n++)               // y-offset
                 {
-                    try
-                    {
-                        if (board[x + i, y + n] > 0)            // Deze positie is al bezet, doorgaan
-                        {
-                            continue;
-                        }
-                    }
-                    catch(IndexOutOfRangeException)
+                    if (y + n < 0 || y + n >= boardSize)    // Als de huidige positie buiten het bord valt, deze berekening overslaan
                     {
                         continue;
                     }
-
-                    if (isValidMove(x + i, y + n))      // Deze zet is voor de huidige speler een geldige zet
+                    if (board[x + i, y + n] > 0)            // Deze positie is al bezet, doorgaan
                     {
-                        board[x + i, y + n] = STONE_VALID;
+                        continue;
                     }
-                    else                                // Zo niet, is de positie leeg (geen hint-steen)
+                    else
                     {
-                        board[x + i, y + n] = STONE_EMPTY;                      
+                        if (isValidMove(x + i, y + n))      // Deze zet is voor de huidige speler een geldige zet
+                        {
+                            board[x + i, y + n] = STONE_VALID;
+                        }
+                        else                                // Zo niet, is de positie leeg (geen hint-steen)
+                        {
+                            board[x + i, y + n] = STONE_EMPTY;
+                        }
                     }
                 }
             }
