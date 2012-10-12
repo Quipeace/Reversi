@@ -16,9 +16,10 @@ namespace Reversi
         public const int PLAYER_1 = 1;
         public const int PLAYER_2 = 2;
 
-
+        
         public ReversiPlayer[] players = new ReversiPlayer[MAX_PLAYERS + 1];
         public int currentPlayer;
+        public int validOptions;
 
         public double gridSize;
         public int boardSize;
@@ -124,6 +125,10 @@ namespace Reversi
                     if (board[x, y] > 0)                // als het een daadwerkelijke steen is
                     {
                         checkValidMovesAround(x, y);          // Mogelijke zetten rond deze steen berekenen
+                        if (checkValidMovesAround(x, y) == true)
+                        {
+                            validOptions++;
+                        }
                     }
                 }
             }

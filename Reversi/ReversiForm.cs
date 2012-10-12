@@ -25,7 +25,7 @@ namespace Reversi
 
         private void btStart_Click(object sender, EventArgs e)
         {
-            currentGame = new ReversiGame((int)20);
+            currentGame = new ReversiGame((int)4);
 
             this.gbInGameControls.Visible = true;
             this.gbPreGameControls.Visible = false;
@@ -63,40 +63,42 @@ namespace Reversi
             }
             graphics.DrawLine(Pens.LightGray, 120, 0, 120, 120);
             graphics.DrawLine(Pens.LightGray, 0, 120, 120, 120);
-
-            for (int x = 0; x < currentGame.boardSize; x++)
-            {
-                for (int y = 0; y < currentGame.boardSize; y++)
-                {
-                    int stoneAtPos = currentGame.board[x, y];
-                    int drawnStoneAtPos = currentGame.drawnBoard[x, y];
-                    int circleX = (int)(x * 20) + 2;
-                    int circleY = (int)(y * 20) + 2;
-
-                    int gridSizeInt = (int)currentGame.gridSize;
-
-                    if (drawnStoneAtPos != stoneAtPos)
-                    {
-                        switch (stoneAtPos)
+            /*
+                        for (int x = 0; x < currentGame.boardSize; x++)
                         {
-                            case ReversiGame.STONE_VALID:
-                                currentGraphics.FillEllipse(Brushes.Red, circleX + (gridSizeInt / 8), circleY + (gridSizeInt / 8), gridSizeInt - (gridSizeInt / 4), gridSizeInt - (gridSizeInt / 4));
-                                break;
-                            case ReversiGame.STONE_EMPTY:
-                                setEmptyStone(x, y, circleX, circleY);
-                                break;
-                            case ReversiGame.STONE_BLACK:
-                                currentGraphics.FillEllipse(Brushes.White, circleX, circleY, (int)currentGame.gridSize, (int)currentGame.gridSize);
-                                break;
-                            case ReversiGame.STONE_WHITE:
-                                currentGraphics.FillEllipse(Brushes.Black, circleX, circleY, (int)currentGame.gridSize, (int)currentGame.gridSize);
-                                break;
-                        }
+                            for (int y = 0; y < currentGame.boardSize; y++)
+                            {
+                                int stoneAtPos = currentGame.board[x, y];
+                                int drawnStoneAtPos = currentGame.drawnBoard[x, y];
+                                int circleX = (int)(x * 20) + 2;
+                                int circleY = (int)(y * 20) + 2;
 
-                        currentGame.drawnBoard[x, y] = stoneAtPos;
-                    }
-                }
-            }
+                                int gridSizeInt = (int)currentGame.gridSize;
+
+                                if (drawnStoneAtPos != stoneAtPos)
+                                {
+                                    switch (stoneAtPos)
+                                    {
+                                        case ReversiGame.STONE_VALID:
+                                            currentGraphics.FillEllipse(Brushes.Red, circleX + (gridSizeInt / 8), circleY + (gridSizeInt / 8), gridSizeInt - (gridSizeInt / 4), gridSizeInt - (gridSizeInt / 4));
+                                            break;
+                                        case ReversiGame.STONE_EMPTY:
+                                            setEmptyStone(x, y, circleX, circleY);
+                                            break;
+                                        case ReversiGame.STONE_BLACK:
+                                            currentGraphics.FillEllipse(Brushes.White, circleX, circleY, (int)currentGame.gridSize, (int)currentGame.gridSize);
+                                            break;
+                                        case ReversiGame.STONE_WHITE:
+                                            currentGraphics.FillEllipse(Brushes.Black, circleX, circleY, (int)currentGame.gridSize, (int)currentGame.gridSize);
+                                            break;
+                                    }
+
+                                    currentGame.drawnBoard[x, y] = stoneAtPos;
+                                }
+                            }
+
+                        }
+             *  */
         }
 
         private void btEndGame_Click(object sender, EventArgs e)
@@ -176,8 +178,31 @@ namespace Reversi
 
             currentGame.processTurn(gridPos);
 
-            label1.Text = "P1: " + currentGame.players[ReversiGame.PLAYER_1].stones;
-            label2.Text = "P2: " + currentGame.players[ReversiGame.PLAYER_2].stones;
+            lbStoneWhite.Text = "" + currentGame.players[ReversiGame.PLAYER_1].stones;
+            lbStoneBlack.Text = "" + currentGame.players[ReversiGame.PLAYER_2].stones;
+            if (currentGame.currentPlayer == ReversiGame.PLAYER_1)
+            {
+                lbPlayerTurn.Text = "Wit is aan de beurt";
+            }
+            else
+            {
+                lbPlayerTurn.Text = "Zwart is aan de beurt";
+            }
+            if ((currentGame.players[ReversiGame.PLAYER_1].stones + currentGame.players[ReversiGame.PLAYER_2].stones) == (currentGame.boardSize * currentGame.boardSize))
+            {
+                if (currentGame.players[ReversiGame.PLAYER_1].stones > currentGame.players[ReversiGame.PLAYER_2].stones)
+                {
+                    lbPlayerTurn.Text = "Wit heeft gewonnen";
+                }
+                else if (currentGame.players[ReversiGame.PLAYER_1].stones == currentGame.players[ReversiGame.PLAYER_2].stones)
+                {
+                    lbPlayerTurn.Text = "Gelijkspel";
+                }
+                else
+                {
+                    lbPlayerTurn.Text = "Zwart heeft gewonnen";
+                }
+            }
             drawStones();
         }
 
