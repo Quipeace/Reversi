@@ -9,8 +9,8 @@ namespace Reversi
     {
         public const int STONE_EMPTY = -2;
         public const int STONE_VALID = -1;
-        public const int STONE_BLUE = 1;
-        public const int STONE_RED = 2;
+        public const int STONE_BLACK = 1;
+        public const int STONE_WHITE = 2;
 
         public const int MAX_PLAYERS = 2;
         public const int PLAYER_1 = 1;
@@ -23,25 +23,37 @@ namespace Reversi
         public double gridSize;
         public int boardSize;
         public int[,] board;
+        public int[,] drawnBoard;
 
         public ReversiGame(int boardSize)
         {
             this.boardSize = boardSize;
             this.board = new int[boardSize, boardSize];
+            this.drawnBoard = new int[boardSize, boardSize];
 
-            this.gridSize = 500 / (double) boardSize ;
+            this.gridSize = 500 / (double)boardSize;
+
+            for (int x = 0; x < boardSize; x++)
+            {
+                for (int y = 0; y < boardSize; y++)
+                {
+                    board[x, y] = STONE_EMPTY;
+                }
+            }
 
             currentPlayer = PLAYER_1;
             players[PLAYER_1] = new ReversiPlayer();
             players[PLAYER_2] = new ReversiPlayer();
+        }
 
-
+        public void setInitialStones()
+        {
             int posXFirst = boardSize / 2;
             int posYFirst = boardSize / 2;
-            board[posXFirst, posYFirst] = STONE_BLUE;
-            board[posXFirst, posYFirst - 1] = STONE_RED;
-            board[posXFirst - 1, posYFirst] = STONE_RED;
-            board[posXFirst - 1, posYFirst - 1] = STONE_BLUE;
+            board[posXFirst, posYFirst] = STONE_BLACK;
+            board[posXFirst, posYFirst - 1] = STONE_WHITE;
+            board[posXFirst - 1, posYFirst] = STONE_WHITE;
+            board[posXFirst - 1, posYFirst - 1] = STONE_BLACK;
 
             refreshValidMoves();
         }
