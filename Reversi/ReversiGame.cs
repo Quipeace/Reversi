@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 
@@ -7,54 +9,73 @@ namespace Reversi
 {
     class ReversiGame
     {
-        public const int STONE_EMPTY = -2;
-        public const int STONE_VALID = -1;
-        public const int STONE_BLACK = 1;
-        public const int STONE_WHITE = 2;
-
+        public const int MAX_BOARDSIZE = 20;
         public const int MAX_PLAYERS = 2;
+
+        public const int STONE_EMPTY = -3;
+        public const int STONE_BESTMOVE = -2;
+        public const int STONE_VALID = -1;
         public const int PLAYER_1 = 1;
         public const int PLAYER_2 = 2;
+<<<<<<< HEAD
         
         public ReversiPlayer[] players = new ReversiPlayer[MAX_PLAYERS + 1];
         public int currentPlayer;
         public int validOptions;
         public int oldValidOptions;
+=======
 
+        public Brush validMoveBrush;
+        public Brush bestMoveBrush;
+
+        public ReversiPlayer[] players = new ReversiPlayer[MAX_PLAYERS + 1];
+        public int currentPlayer;
+>>>>>>> Boardsize-selector werkend
+
+        public int validMoves;
         public double gridSize;
-        public int boardSize;
+        public int[] boardSize;
         public int[,] board;
         public int[,] drawnBoard;
 
-        public ReversiGame(int boardSize)
+        public ReversiGame(int[] boardSize)
         {
             this.boardSize = boardSize;
-            this.board = new int[boardSize, boardSize];
-            this.drawnBoard = new int[boardSize, boardSize];
-
-            this.gridSize = 500 / (double)boardSize;
-
-            for (int x = 0; x < boardSize; x++)
+            this.board = new int[boardSize[0], boardSize[1]];
+            this.drawnBoard = new int[boardSize[0], boardSize[1]];
+            if (boardSize[0] > boardSize[1])
             {
-                for (int y = 0; y < boardSize; y++)
+                this.gridSize = 500 / (double)boardSize[0]; // TODO: schalen?
+            }
+            else
+            {
+                this.gridSize = 500 / (double)boardSize[1];
+            }
+
+            for (int x = 0; x < boardSize[0]; x++)
+            {
+                for (int y = 0; y < boardSize[1]; y++)
                 {
-                    board[x, y] = STONE_EMPTY;
+                    this.board[x, y] = STONE_EMPTY;
                 }
             }
 
-            currentPlayer = PLAYER_1;
-            players[PLAYER_1] = new ReversiPlayer();
-            players[PLAYER_2] = new ReversiPlayer();
+            this.currentPlayer = PLAYER_1;
+            this.players[PLAYER_1] = new ReversiPlayer(new HatchBrush(HatchStyle.LargeCheckerBoard, Color.Black, Color.FromArgb(255, 70, 70, 70)));
+            this.players[PLAYER_2] = new ReversiPlayer(new HatchBrush(HatchStyle.LargeCheckerBoard, Color.White, Color.FromArgb(255, 220, 220, 220)));
+
+            this.validMoveBrush = new SolidBrush(Color.FromArgb(150, 150, 150, 150));
+            this.bestMoveBrush = new SolidBrush(Color.FromArgb(150, 150, 150));
         }
 
         public void setInitialStones()
         {
-            int posXFirst = boardSize / 2;
-            int posYFirst = boardSize / 2;
-            board[posXFirst, posYFirst] = STONE_BLACK;
-            board[posXFirst, posYFirst - 1] = STONE_WHITE;
-            board[posXFirst - 1, posYFirst] = STONE_WHITE;
-            board[posXFirst - 1, posYFirst - 1] = STONE_BLACK;
+            int posXFirst = boardSize[0] / 2;
+            int posYFirst = boardSize[1] / 2;
+            board[posXFirst, posYFirst] = PLAYER_1;
+            board[posXFirst, posYFirst - 1] = PLAYER_2;
+            board[posXFirst - 1, posYFirst] = PLAYER_2;
+            board[posXFirst - 1, posYFirst - 1] = PLAYER_1;
 
             refreshValidMoves();
         }
@@ -71,14 +92,19 @@ namespace Reversi
                 finishTurn(clickPos[0], clickPos[1]);
 
                 currentPlayer++;                                    // Volgende speler
-                if (currentPlayer > MAX_PLAYERS)                     // Als deze speler niet meedoet, terug naar de eerste
+                if (currentPlayer > MAX_PLAYERS)                    // Als deze speler niet meedoet, terug naar de eerste
                 {
                     currentPlayer = PLAYER_1;
                 }
+<<<<<<< HEAD
 
                 //TODO: Als validOptions = 0, dan maakt hij OLD 5. Ik snap dit niet!
                 oldValidOptions = validOptions;
                 validOptions = 0;
+=======
+                
+                Console.Write("PLAYER: " + currentPlayer);
+>>>>>>> Boardsize-selector werkend
                 refreshValidMoves();                                // Geldige zetten voor de nieuwe speler uitrekenen
 
                 Console.WriteLine("OLD: " + oldValidOptions);
@@ -141,13 +167,20 @@ namespace Reversi
 
         public void refreshValidMoves()
         {
-            for (int x = 0; x < boardSize; x++)         // voor alle kolommen
+            for (int x = 0; x < boardSize[0]; x++)      // voor alle kolommen
             {
-                for (int y = 0; y < boardSize; y++)     // voor alle rijen
+                for (int y = 0; y < boardSize[1]; y++)  // voor alle rijen
                 {
                     if (board[x, y] > 0)                // als het een daadwerkelijke steen is
                     {
                         checkValidMovesAround(x, y);          // Mogelijke zetten rond deze steen berekenen
+<<<<<<< HEAD
+=======
+                        if (checkValidMovesAround(x, y) == true)
+                        {
+                            validMoves++;
+                        }
+>>>>>>> Boardsize-selector werkend
                     }
                 }
             }
@@ -157,13 +190,13 @@ namespace Reversi
         {
             for (int i = -1; i <= 1; i++)                   // x-offset
             {
-                if (x + i < 0 || x + i >= boardSize)        // Als de huidige positie buiten het bord valt, deze berekening overslaan
+                if (x + i < 0 || x + i >= boardSize[0])     // Als de huidige positie buiten het bord valt, deze berekening overslaan
                 {
                     continue;
                 }
                 for (int n = -1; n <= 1; n++)               // y-offset
                 {
-                    if (y + n < 0 || y + n >= boardSize)    // Als de huidige positie buiten het bord valt, deze berekening overslaan
+                    if (y + n < 0 || y + n >= boardSize[1]) // Als de huidige positie buiten het bord valt, deze berekening overslaan
                     {
                         continue;
                     }
@@ -178,7 +211,7 @@ namespace Reversi
                             board[x + i, y + n] = STONE_VALID;
                             validOptions++;
                         }
-                        else                                // Zo niet, is de positie leeg (geen hint-steen)
+                        else                                // Zo niet, is de positie leeg (geen hint-steen, geblokte achtergrond)
                         {
                             board[x + i, y + n] = STONE_EMPTY;
                         }
@@ -255,7 +288,7 @@ namespace Reversi
         }
         private bool isRightValid(int x, int y, bool setStone)
         {
-            for (int i = x + 1; i < boardSize; i++)                 // Naar rechts
+            for (int i = x + 1; i < boardSize[0]; i++)              // Naar rechts
             {
                 int currentStone = board[i, y];
                 if (i == x + 1 && currentStone == currentPlayer)
@@ -303,7 +336,7 @@ namespace Reversi
         }
         private bool isDownValid(int x, int y, bool setStone)
         {
-            for (int i = y + 1; i < boardSize; i++)                 // Naar beneden
+            for (int i = y + 1; i < boardSize[1]; i++)              // Naar beneden
             {
                 int currentStone = board[x, i];
                 if (i == y + 1 && currentStone == currentPlayer)
@@ -327,9 +360,9 @@ namespace Reversi
         }
         private bool isLeftUpValid(int x, int y, bool setStone)
         {
-            for (int i = 1; i < boardSize; i++)                     // Links-omhoog
+            for (int i = 1; i < boardSize[0] && i < boardSize[1]; i++) 
             {
-                if (x - i < 0 || y - i < 0)                         // Buiten het bord, geen geldige zet
+                if (x - i < 0 || y - i < 0)                             // Buiten het bord, geen geldige zet
                 {
                     break;
                 }
@@ -355,9 +388,9 @@ namespace Reversi
         }
         private bool isRightUpValid(int x, int y, bool setStone)
         {
-            for (int i = 1; i < boardSize; i++)                     // Rechts-omhoog
+            for (int i = 1; i < boardSize[0] && i < boardSize[1]; i++) 
             {
-                if (x + i >= boardSize || y - i < 0)
+                if (x + i >= boardSize[0] || y - i < 0)
                 {
                     break;
                 }
@@ -383,9 +416,9 @@ namespace Reversi
         }
         private bool isLeftDownValid(int x, int y, bool setStone)
         {
-            for (int i = 1; i < boardSize; i++)                     // Links-naar beneden
+            for (int i = 1; i < boardSize[0] && i < boardSize[1]; i++) 
             {
-                if (x - i < 0 || y + i >= boardSize)
+                if (x - i < 0 || y + i >= boardSize[1])
                 {
                     break;
                 }
@@ -411,9 +444,9 @@ namespace Reversi
         }
         private bool isRightDownValid(int x, int y, bool setStone)
         {
-            for (int i = 1; i < boardSize; i++)                     // Rechts-naar beneden
+            for (int i = 1; i < boardSize[0] && i < boardSize[1]; i++)
             {
-                if (x + i >= boardSize || y + i >= boardSize)
+                if (x + i >= boardSize[0] || y + i >= boardSize[1])
                 {
                     break;
                 }
