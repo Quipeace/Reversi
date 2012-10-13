@@ -17,20 +17,14 @@ namespace Reversi
         public const int STONE_VALID = -1;
         public const int PLAYER_1 = 1;
         public const int PLAYER_2 = 2;
-<<<<<<< HEAD
-        
+
         public ReversiPlayer[] players = new ReversiPlayer[MAX_PLAYERS + 1];
         public int currentPlayer;
         public int validOptions;
         public int oldValidOptions;
-=======
 
         public Brush validMoveBrush;
         public Brush bestMoveBrush;
-
-        public ReversiPlayer[] players = new ReversiPlayer[MAX_PLAYERS + 1];
-        public int currentPlayer;
->>>>>>> Boardsize-selector werkend
 
         public int validMoves;
         public double gridSize;
@@ -96,15 +90,13 @@ namespace Reversi
                 {
                     currentPlayer = PLAYER_1;
                 }
-<<<<<<< HEAD
 
                 //TODO: Als validOptions = 0, dan maakt hij OLD 5. Ik snap dit niet!
                 oldValidOptions = validOptions;
                 validOptions = 0;
-=======
-                
+    
                 Console.Write("PLAYER: " + currentPlayer);
->>>>>>> Boardsize-selector werkend
+
                 refreshValidMoves();                                // Geldige zetten voor de nieuwe speler uitrekenen
 
                 Console.WriteLine("OLD: " + oldValidOptions);
@@ -174,13 +166,11 @@ namespace Reversi
                     if (board[x, y] > 0)                // als het een daadwerkelijke steen is
                     {
                         checkValidMovesAround(x, y);          // Mogelijke zetten rond deze steen berekenen
-<<<<<<< HEAD
-=======
+
                         if (checkValidMovesAround(x, y) == true)
                         {
                             validMoves++;
                         }
->>>>>>> Boardsize-selector werkend
                     }
                 }
             }
