@@ -21,7 +21,9 @@ namespace Reversi
         public ReversiPlayer[] players = new ReversiPlayer[MAX_PLAYERS + 1];
         public int currentPlayer;
         public int validOptions;
+        public int newValidOptions;
         public int oldValidOptions;
+        public bool gameEnded = false;
 
         public Brush validMoveBrush;
         public Brush bestMoveBrush;
@@ -91,22 +93,23 @@ namespace Reversi
                     currentPlayer = PLAYER_1;
                 }
 
-                //TODO: Als validOptions = 0, dan maakt hij OLD 5. Ik snap dit niet!
-                oldValidOptions = validOptions;
+                if (newValidOptions == 0)
+                {
+                    oldValidOptions = 0;
+                }
+                else
+                {
+                    oldValidOptions = validOptions;
+                }
                 validOptions = 0;
-    
-                Console.Write("PLAYER: " + currentPlayer);
 
                 refreshValidMoves();                                // Geldige zetten voor de nieuwe speler uitrekenen
-
-                Console.WriteLine("OLD: " + oldValidOptions);
-                Console.WriteLine("NEW: " + validOptions);
-
+                newValidOptions = validOptions;
                 if (validOptions == 0)
                 {
                     if (oldValidOptions == 0)
                     {
-                        //TODO: Waardes zetten die in de label moeten komen.
+                        gameEnded = true;
                     }
                     else
                     {

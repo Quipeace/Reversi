@@ -30,6 +30,7 @@
         {
             this.btStart = new System.Windows.Forms.Button();
             this.gbPreGameControls = new System.Windows.Forms.GroupBox();
+            this.pnBoardSize = new System.Windows.Forms.Panel();
             this.gbInGameControls = new System.Windows.Forms.GroupBox();
             this.lbPlayerTurn = new System.Windows.Forms.Label();
             this.lbStoneWhite = new System.Windows.Forms.Label();
@@ -37,7 +38,6 @@
             this.lbColorWhite = new System.Windows.Forms.Label();
             this.lbColorBlack = new System.Windows.Forms.Label();
             this.btEndGame = new System.Windows.Forms.Button();
-            this.pnBoardSize = new System.Windows.Forms.Panel();
             this.pnBoard = new System.Windows.Forms.Panel();
             this.gbPreGameControls.SuspendLayout();
             this.gbInGameControls.SuspendLayout();
@@ -55,8 +55,8 @@
             // 
             // gbPreGameControls
             // 
-            this.gbPreGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbPreGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.gbPreGameControls.Controls.Add(this.pnBoardSize);
             this.gbPreGameControls.Controls.Add(this.btStart);
             this.gbPreGameControls.Location = new System.Drawing.Point(12, 12);
@@ -66,10 +66,21 @@
             this.gbPreGameControls.TabStop = false;
             this.gbPreGameControls.Text = "New Game";
             // 
+            // pnBoardSize
+            // 
+            this.pnBoardSize.BackColor = System.Drawing.Color.Transparent;
+            this.pnBoardSize.Location = new System.Drawing.Point(87, 19);
+            this.pnBoardSize.Name = "pnBoardSize";
+            this.pnBoardSize.Size = new System.Drawing.Size(121, 121);
+            this.pnBoardSize.TabIndex = 4;
+            this.pnBoardSize.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnBoardSize_MouseClick);
+            this.pnBoardSize.MouseLeave += new System.EventHandler(this.pnBoardSize_MouseLeave);
+            this.pnBoardSize.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnBoardSize_MouseMove);
+            // 
             // gbInGameControls
             // 
-            this.gbInGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbInGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.gbInGameControls.Controls.Add(this.lbPlayerTurn);
             this.gbInGameControls.Controls.Add(this.lbStoneWhite);
             this.gbInGameControls.Controls.Add(this.lbStoneBlack);
@@ -89,9 +100,9 @@
             this.lbPlayerTurn.AutoSize = true;
             this.lbPlayerTurn.Location = new System.Drawing.Point(103, 50);
             this.lbPlayerTurn.Name = "lbPlayerTurn";
-            this.lbPlayerTurn.Size = new System.Drawing.Size(96, 13);
+            this.lbPlayerTurn.Size = new System.Drawing.Size(107, 13);
             this.lbPlayerTurn.TabIndex = 5;
-            this.lbPlayerTurn.Text = "Wit is aan de beurt";
+            this.lbPlayerTurn.Text = "Zwart is aan de beurt";
             // 
             // lbStoneWhite
             // 
@@ -138,17 +149,6 @@
             this.btEndGame.Text = "End Game";
             this.btEndGame.UseVisualStyleBackColor = true;
             this.btEndGame.Click += new System.EventHandler(this.btEndGame_Click);
-            // 
-            // pnBoardSize
-            // 
-            this.pnBoardSize.BackColor = System.Drawing.Color.Transparent;
-            this.pnBoardSize.Location = new System.Drawing.Point(87, 19);
-            this.pnBoardSize.Name = "pnBoardSize";
-            this.pnBoardSize.Size = new System.Drawing.Size(121, 121);
-            this.pnBoardSize.TabIndex = 4;
-            this.pnBoardSize.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnBoardSize_MouseClick);
-            this.pnBoardSize.MouseLeave += new System.EventHandler(this.pnBoardSize_MouseLeave);
-            this.pnBoardSize.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnBoardSize_MouseMove);
             // 
             // pnBoard
             // 

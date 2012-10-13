@@ -158,21 +158,21 @@ namespace Reversi
 
             currentGame.processTurn(gridPos);
 
-            lbStoneWhite.Text = currentGame.players[ReversiGame.PLAYER_1].stones.ToString();
-            lbStoneBlack.Text = currentGame.players[ReversiGame.PLAYER_2].stones.ToString();
+            lbStoneWhite.Text = currentGame.players[ReversiGame.PLAYER_2].stones.ToString();
+            lbStoneBlack.Text = currentGame.players[ReversiGame.PLAYER_1].stones.ToString();
             if (currentGame.currentPlayer == ReversiGame.PLAYER_1)
             {
-                lbPlayerTurn.Text = "Wit is aan de beurt";
+                lbPlayerTurn.Text = "Zwart is aan de beurt";
             }
             else
             {
-                lbPlayerTurn.Text = "Zwart is aan de beurt";
+                lbPlayerTurn.Text = "Wit is aan de beurt";
             }
             if ((currentGame.players[ReversiGame.PLAYER_1].stones + currentGame.players[ReversiGame.PLAYER_2].stones) == (currentGame.boardSize[0] * currentGame.boardSize[1]))
             {
                 if (currentGame.players[ReversiGame.PLAYER_1].stones > currentGame.players[ReversiGame.PLAYER_2].stones)
                 {
-                    lbPlayerTurn.Text = "Wit heeft gewonnen";
+                    lbPlayerTurn.Text = "Zwart heeft gewonnen";
                 }
                 else if (currentGame.players[ReversiGame.PLAYER_1].stones == currentGame.players[ReversiGame.PLAYER_2].stones)
                 {
@@ -180,7 +180,22 @@ namespace Reversi
                 }
                 else
                 {
+                    lbPlayerTurn.Text = "Wit heeft gewonnen";
+                }
+            }
+            if (currentGame.gameEnded == true)
+            {
+                if (currentGame.players[ReversiGame.PLAYER_1].stones > currentGame.players[ReversiGame.PLAYER_2].stones)
+                {
                     lbPlayerTurn.Text = "Zwart heeft gewonnen";
+                }
+                else if (currentGame.players[ReversiGame.PLAYER_1].stones == currentGame.players[ReversiGame.PLAYER_2].stones)
+                {
+                    lbPlayerTurn.Text = "Gelijkspel";
+                }
+                else
+                {
+                    lbPlayerTurn.Text = "Wit heeft gewonnen";
                 }
             }
             drawStones();
