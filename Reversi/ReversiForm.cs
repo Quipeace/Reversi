@@ -190,20 +190,25 @@ namespace Reversi
             }
             if ((currentGame.players[ReversiGame.PLAYER_1].stones + currentGame.players[ReversiGame.PLAYER_2].stones) == (currentGame.boardSize * currentGame.boardSize))
             {
-                if (currentGame.players[ReversiGame.PLAYER_1].stones > currentGame.players[ReversiGame.PLAYER_2].stones)
-                {
-                    lbPlayerTurn.Text = "Wit heeft gewonnen";
-                }
-                else if (currentGame.players[ReversiGame.PLAYER_1].stones == currentGame.players[ReversiGame.PLAYER_2].stones)
-                {
-                    lbPlayerTurn.Text = "Gelijkspel";
-                }
-                else
-                {
-                    lbPlayerTurn.Text = "Zwart heeft gewonnen";
-                }
+                gameOver();
             }
             drawStones();
+        }
+
+        public void gameOver()
+        {
+            if (currentGame.players[ReversiGame.PLAYER_1].stones > currentGame.players[ReversiGame.PLAYER_2].stones)
+            {
+                lbPlayerTurn.Text = "Wit heeft gewonnen";
+            }
+            else if (currentGame.players[ReversiGame.PLAYER_1].stones == currentGame.players[ReversiGame.PLAYER_2].stones)
+            {
+                lbPlayerTurn.Text = "Gelijkspel";
+            }
+            else
+            {
+                lbPlayerTurn.Text = "Zwart heeft gewonnen";
+            }
         }
 
         private void pnBoardSize_MouseClick(object sender, MouseEventArgs e)

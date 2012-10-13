@@ -15,11 +15,11 @@ namespace Reversi
         public const int MAX_PLAYERS = 2;
         public const int PLAYER_1 = 1;
         public const int PLAYER_2 = 2;
-
         
         public ReversiPlayer[] players = new ReversiPlayer[MAX_PLAYERS + 1];
         public int currentPlayer;
         public int validOptions;
+        public int oldValidOptions;
 
         public double gridSize;
         public int boardSize;
@@ -76,7 +76,30 @@ namespace Reversi
                     currentPlayer = PLAYER_1;
                 }
 
+                //TODO: Als validOptions = 0, dan maakt hij OLD 5. Ik snap dit niet!
+                oldValidOptions = validOptions;
+                validOptions = 0;
                 refreshValidMoves();                                // Geldige zetten voor de nieuwe speler uitrekenen
+
+                Console.WriteLine("OLD: " + oldValidOptions);
+                Console.WriteLine("NEW: " + validOptions);
+
+                if (validOptions == 0)
+                {
+                    if (oldValidOptions == 0)
+                    {
+                        //TODO: Waardes zetten die in de label moeten komen.
+                    }
+                    else
+                    {
+                        currentPlayer++;
+                        if (currentPlayer > MAX_PLAYERS)                     // Als deze speler niet meedoet, terug naar de eerste
+                        {
+                            currentPlayer = PLAYER_1;
+                        }
+                        refreshValidMoves();
+                    }
+                }
             }
         }
 
@@ -125,10 +148,6 @@ namespace Reversi
                     if (board[x, y] > 0)                // als het een daadwerkelijke steen is
                     {
                         checkValidMovesAround(x, y);          // Mogelijke zetten rond deze steen berekenen
-                        if (checkValidMovesAround(x, y) == true)
-                        {
-                            validOptions++;
-                        }
                     }
                 }
             }
@@ -157,6 +176,7 @@ namespace Reversi
                         if (isValidMove(x + i, y + n))      // Deze zet is voor de huidige speler een geldige zet
                         {
                             board[x + i, y + n] = STONE_VALID;
+                            validOptions++;
                         }
                         else                                // Zo niet, is de positie leeg (geen hint-steen)
                         {
