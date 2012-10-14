@@ -12,6 +12,7 @@ namespace Reversi
         private int[] boardSizeSelectorPos = { 8, 8 };
         private ReversiGame currentGame;
         private Graphics currentGraphics;
+        private int helpClicked;
 
         public ReversiForm()
         {
@@ -24,7 +25,7 @@ namespace Reversi
         private void btStart_Click(object sender, EventArgs e)
         {
             currentGame = new ReversiGame(boardSizeSelectorPos);
-
+            helpClicked = 1;
             this.gbInGameControls.Visible = true;
             this.gbPreGameControls.Visible = false;
 
@@ -107,7 +108,10 @@ namespace Reversi
                         switch (stoneAtPos)
                         {
                             case ReversiGame.STONE_VALID:
-                                currentGraphics.FillEllipse(currentGame.validMoveBrush, circleX + (gridSizeInt / 6), circleY + (gridSizeInt / 6), gridSizeInt - (gridSizeInt / 3), gridSizeInt - (gridSizeInt / 3));
+                                if (helpClicked % 2 == 0)
+                                    currentGraphics.FillEllipse(currentGame.validMoveBrush, circleX + (gridSizeInt / 6), circleY + (gridSizeInt / 6), gridSizeInt - (gridSizeInt / 3), gridSizeInt - (gridSizeInt / 3));
+                                else
+                                    setEmptyStone(x, y, circleX, circleY);
                                 break;
                             case ReversiGame.STONE_EMPTY:
                                 setEmptyStone(x, y, circleX, circleY);
@@ -168,22 +172,7 @@ namespace Reversi
             {
                 lbPlayerTurn.Text = "Wit is aan de beurt";
             }
-            if ((currentGame.players[ReversiGame.PLAYER_1].stones + currentGame.players[ReversiGame.PLAYER_2].stones) == (currentGame.boardSize[0] * currentGame.boardSize[1]))
-            {
-                if (currentGame.players[ReversiGame.PLAYER_1].stones > currentGame.players[ReversiGame.PLAYER_2].stones)
-                {
-                    lbPlayerTurn.Text = "Zwart heeft gewonnen";
-                }
-                else if (currentGame.players[ReversiGame.PLAYER_1].stones == currentGame.players[ReversiGame.PLAYER_2].stones)
-                {
-                    lbPlayerTurn.Text = "Gelijkspel";
-                }
-                else
-                {
-                    lbPlayerTurn.Text = "Wit heeft gewonnen";
-                }
-            }
-            if (currentGame.gameEnded == true)
+            if (((currentGame.players[ReversiGame.PLAYER_1].stones + currentGame.players[ReversiGame.PLAYER_2].stones) == (currentGame.boardSize[0] * currentGame.boardSize[1])) || currentGame.gameEnded == true)
             {
                 if (currentGame.players[ReversiGame.PLAYER_1].stones > currentGame.players[ReversiGame.PLAYER_2].stones)
                 {
@@ -230,6 +219,13 @@ namespace Reversi
         {
             drawMoveSelector = false;
             pnBoardSize.Invalidate();
+        }
+
+        private void btInGameHelp_Click(object sender, EventArgs e)
+        {
+            helpClicked++;
+            Console.WriteLine("CLICK: " + helpClicked);
+            Invalidate();
         }
     }
 }

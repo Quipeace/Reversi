@@ -39,6 +39,7 @@
             this.lbColorBlack = new System.Windows.Forms.Label();
             this.btEndGame = new System.Windows.Forms.Button();
             this.pnBoard = new System.Windows.Forms.Panel();
+            this.btInGameHelp = new System.Windows.Forms.Button();
             this.gbPreGameControls.SuspendLayout();
             this.gbInGameControls.SuspendLayout();
             this.SuspendLayout();
@@ -81,6 +82,7 @@
             // 
             this.gbInGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbInGameControls.Controls.Add(this.btInGameHelp);
             this.gbInGameControls.Controls.Add(this.lbPlayerTurn);
             this.gbInGameControls.Controls.Add(this.lbStoneWhite);
             this.gbInGameControls.Controls.Add(this.lbStoneBlack);
@@ -158,6 +160,16 @@
             this.pnBoard.TabIndex = 5;
             this.pnBoard.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnBoard_MouseClick);
             // 
+            // btInGameHelp
+            // 
+            this.btInGameHelp.Location = new System.Drawing.Point(271, 24);
+            this.btInGameHelp.Name = "btInGameHelp";
+            this.btInGameHelp.Size = new System.Drawing.Size(131, 39);
+            this.btInGameHelp.TabIndex = 6;
+            this.btInGameHelp.Text = "Help!";
+            this.btInGameHelp.UseVisualStyleBackColor = true;
+            this.btInGameHelp.Click += new System.EventHandler(this.btInGameHelp_Click);
+            // 
             // ReversiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -188,5 +200,6 @@
         private System.Windows.Forms.Label lbStoneWhite;
         private System.Windows.Forms.Label lbStoneBlack;
         private System.Windows.Forms.Label lbPlayerTurn;
+        private System.Windows.Forms.Button btInGameHelp;
     }
 }
