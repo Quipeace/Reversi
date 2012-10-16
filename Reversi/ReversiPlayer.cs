@@ -8,12 +8,10 @@ namespace Reversi
 {
     class ReversiPlayer
     {
-        public Brush brush;
         public int stones;
 
-        public ReversiPlayer(Brush brush)
+        public ReversiPlayer()
         {
-            this.brush = brush;
             this.stones = 2;
         }
     }

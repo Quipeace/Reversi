@@ -32,16 +32,14 @@
             this.gbPreGameControls = new System.Windows.Forms.GroupBox();
             this.pnBoardSize = new System.Windows.Forms.Panel();
             this.gbInGameControls = new System.Windows.Forms.GroupBox();
+            this.pnScoreKeeper = new System.Windows.Forms.Panel();
             this.lbPlayerTurn = new System.Windows.Forms.Label();
-            this.lbStoneWhite = new System.Windows.Forms.Label();
-            this.lbStoneBlack = new System.Windows.Forms.Label();
-            this.lbColorWhite = new System.Windows.Forms.Label();
-            this.lbColorBlack = new System.Windows.Forms.Label();
+            this.tbHelp = new System.Windows.Forms.TrackBar();
             this.btEndGame = new System.Windows.Forms.Button();
             this.pnBoard = new System.Windows.Forms.Panel();
-            this.btInGameHelp = new System.Windows.Forms.Button();
             this.gbPreGameControls.SuspendLayout();
             this.gbInGameControls.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbHelp)).BeginInit();
             this.SuspendLayout();
             // 
             // btStart
@@ -56,8 +54,8 @@
             // 
             // gbPreGameControls
             // 
-            this.gbPreGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbPreGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbPreGameControls.Controls.Add(this.pnBoardSize);
             this.gbPreGameControls.Controls.Add(this.btStart);
             this.gbPreGameControls.Location = new System.Drawing.Point(12, 12);
@@ -80,14 +78,11 @@
             // 
             // gbInGameControls
             // 
-            this.gbInGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbInGameControls.Controls.Add(this.btInGameHelp);
+            this.gbInGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbInGameControls.Controls.Add(this.pnScoreKeeper);
             this.gbInGameControls.Controls.Add(this.lbPlayerTurn);
-            this.gbInGameControls.Controls.Add(this.lbStoneWhite);
-            this.gbInGameControls.Controls.Add(this.lbStoneBlack);
-            this.gbInGameControls.Controls.Add(this.lbColorWhite);
-            this.gbInGameControls.Controls.Add(this.lbColorBlack);
+            this.gbInGameControls.Controls.Add(this.tbHelp);
             this.gbInGameControls.Controls.Add(this.btEndGame);
             this.gbInGameControls.Location = new System.Drawing.Point(12, 12);
             this.gbInGameControls.Name = "gbInGameControls";
@@ -97,50 +92,33 @@
             this.gbInGameControls.Text = "In Game";
             this.gbInGameControls.Visible = false;
             // 
+            // pnScoreKeeper
+            // 
+            this.pnScoreKeeper.Location = new System.Drawing.Point(91, 19);
+            this.pnScoreKeeper.Name = "pnScoreKeeper";
+            this.pnScoreKeeper.Size = new System.Drawing.Size(252, 121);
+            this.pnScoreKeeper.TabIndex = 7;
+            // 
             // lbPlayerTurn
             // 
             this.lbPlayerTurn.AutoSize = true;
-            this.lbPlayerTurn.Location = new System.Drawing.Point(103, 50);
+            this.lbPlayerTurn.Location = new System.Drawing.Point(349, 19);
             this.lbPlayerTurn.Name = "lbPlayerTurn";
             this.lbPlayerTurn.Size = new System.Drawing.Size(107, 13);
             this.lbPlayerTurn.TabIndex = 5;
             this.lbPlayerTurn.Text = "Zwart is aan de beurt";
             // 
-            // lbStoneWhite
+            // tbHelp
             // 
-            this.lbStoneWhite.AutoSize = true;
-            this.lbStoneWhite.Location = new System.Drawing.Point(146, 37);
-            this.lbStoneWhite.Name = "lbStoneWhite";
-            this.lbStoneWhite.Size = new System.Drawing.Size(13, 13);
-            this.lbStoneWhite.TabIndex = 4;
-            this.lbStoneWhite.Text = "2";
-            // 
-            // lbStoneBlack
-            // 
-            this.lbStoneBlack.AutoSize = true;
-            this.lbStoneBlack.Location = new System.Drawing.Point(146, 24);
-            this.lbStoneBlack.Name = "lbStoneBlack";
-            this.lbStoneBlack.Size = new System.Drawing.Size(13, 13);
-            this.lbStoneBlack.TabIndex = 3;
-            this.lbStoneBlack.Text = "2";
-            // 
-            // lbColorWhite
-            // 
-            this.lbColorWhite.AutoSize = true;
-            this.lbColorWhite.Location = new System.Drawing.Point(103, 37);
-            this.lbColorWhite.Name = "lbColorWhite";
-            this.lbColorWhite.Size = new System.Drawing.Size(26, 13);
-            this.lbColorWhite.TabIndex = 2;
-            this.lbColorWhite.Text = "Wit:";
-            // 
-            // lbColorBlack
-            // 
-            this.lbColorBlack.AutoSize = true;
-            this.lbColorBlack.Location = new System.Drawing.Point(103, 24);
-            this.lbColorBlack.Name = "lbColorBlack";
-            this.lbColorBlack.Size = new System.Drawing.Size(37, 13);
-            this.lbColorBlack.TabIndex = 1;
-            this.lbColorBlack.Text = "Zwart:";
+            this.tbHelp.LargeChange = 1;
+            this.tbHelp.Location = new System.Drawing.Point(449, 19);
+            this.tbHelp.Maximum = 2;
+            this.tbHelp.Name = "tbHelp";
+            this.tbHelp.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.tbHelp.Size = new System.Drawing.Size(45, 121);
+            this.tbHelp.TabIndex = 6;
+            this.tbHelp.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
+            this.tbHelp.ValueChanged += new System.EventHandler(this.tbHelp_ValueChanged);
             // 
             // btEndGame
             // 
@@ -160,16 +138,6 @@
             this.pnBoard.TabIndex = 5;
             this.pnBoard.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnBoard_MouseClick);
             // 
-            // btInGameHelp
-            // 
-            this.btInGameHelp.Location = new System.Drawing.Point(271, 24);
-            this.btInGameHelp.Name = "btInGameHelp";
-            this.btInGameHelp.Size = new System.Drawing.Size(131, 39);
-            this.btInGameHelp.TabIndex = 6;
-            this.btInGameHelp.Text = "Help!";
-            this.btInGameHelp.UseVisualStyleBackColor = true;
-            this.btInGameHelp.Click += new System.EventHandler(this.btInGameHelp_Click);
-            // 
             // ReversiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -183,6 +151,7 @@
             this.gbPreGameControls.ResumeLayout(false);
             this.gbInGameControls.ResumeLayout(false);
             this.gbInGameControls.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbHelp)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -194,12 +163,9 @@
         private System.Windows.Forms.GroupBox gbInGameControls;
         private System.Windows.Forms.Button btEndGame;
         private System.Windows.Forms.Panel pnBoard;
-        private System.Windows.Forms.Label lbColorWhite;
-        private System.Windows.Forms.Label lbColorBlack;
         private System.Windows.Forms.Panel pnBoardSize;
-        private System.Windows.Forms.Label lbStoneWhite;
-        private System.Windows.Forms.Label lbStoneBlack;
         private System.Windows.Forms.Label lbPlayerTurn;
-        private System.Windows.Forms.Button btInGameHelp;
+        private System.Windows.Forms.TrackBar tbHelp;
+        private System.Windows.Forms.Panel pnScoreKeeper;
     }
 }

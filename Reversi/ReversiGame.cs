@@ -12,6 +12,10 @@ namespace Reversi
         public const int MAX_BOARDSIZE = 20;
         public const int MAX_PLAYERS = 2;
 
+        public const int HELP_OFF = 0;
+        public const int HELP_MILD = 1;
+        public const int HELP_FULL = 2;
+
         public const int STONE_EMPTY = -3;
         public const int STONE_BESTMOVE = -2;
         public const int STONE_VALID = -1;
@@ -23,10 +27,8 @@ namespace Reversi
         public int validOptions;
         public int newValidOptions;
         public int oldValidOptions;
+        public int helpMode;
         public bool gameEnded = false;
-
-        public Brush validMoveBrush;
-        public Brush bestMoveBrush;
 
         public int validMoves;
         public double gridSize;
@@ -57,11 +59,8 @@ namespace Reversi
             }
 
             this.currentPlayer = PLAYER_1;
-            this.players[PLAYER_1] = new ReversiPlayer(new HatchBrush(HatchStyle.LargeCheckerBoard, Color.Black, Color.FromArgb(255, 70, 70, 70)));
-            this.players[PLAYER_2] = new ReversiPlayer(new HatchBrush(HatchStyle.LargeCheckerBoard, Color.White, Color.FromArgb(255, 220, 220, 220)));
-
-            this.validMoveBrush = new SolidBrush(Color.FromArgb(150, 150, 150, 150));
-            this.bestMoveBrush = new SolidBrush(Color.FromArgb(150, 150, 150));
+            this.players[PLAYER_1] = new ReversiPlayer();
+            this.players[PLAYER_2] = new ReversiPlayer();
         }
 
         public void setInitialStones()
