@@ -30,13 +30,12 @@
         {
             this.btStart = new System.Windows.Forms.Button();
             this.gbPreGameControls = new System.Windows.Forms.GroupBox();
-            this.pnBoardSize = new System.Windows.Forms.Panel();
+            this.pnBoardSize = new Reversi.BufferedPanel();
             this.gbInGameControls = new System.Windows.Forms.GroupBox();
-            this.pnScoreKeeper = new System.Windows.Forms.Panel();
-            this.lbPlayerTurn = new System.Windows.Forms.Label();
+            this.pnScoreKeeper = new Reversi.BufferedPanel();
             this.tbHelp = new System.Windows.Forms.TrackBar();
             this.btEndGame = new System.Windows.Forms.Button();
-            this.pnBoard = new System.Windows.Forms.Panel();
+            this.pnBoard = new Reversi.BufferedPanel();
             this.gbPreGameControls.SuspendLayout();
             this.gbInGameControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbHelp)).BeginInit();
@@ -72,6 +71,7 @@
             this.pnBoardSize.Name = "pnBoardSize";
             this.pnBoardSize.Size = new System.Drawing.Size(121, 121);
             this.pnBoardSize.TabIndex = 4;
+            this.pnBoardSize.Paint += new System.Windows.Forms.PaintEventHandler(this.drawBoardSizeSelector);
             this.pnBoardSize.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnBoardSize_MouseClick);
             this.pnBoardSize.MouseLeave += new System.EventHandler(this.pnBoardSize_MouseLeave);
             this.pnBoardSize.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnBoardSize_MouseMove);
@@ -81,7 +81,6 @@
             this.gbInGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbInGameControls.Controls.Add(this.pnScoreKeeper);
-            this.gbInGameControls.Controls.Add(this.lbPlayerTurn);
             this.gbInGameControls.Controls.Add(this.tbHelp);
             this.gbInGameControls.Controls.Add(this.btEndGame);
             this.gbInGameControls.Location = new System.Drawing.Point(12, 12);
@@ -98,15 +97,7 @@
             this.pnScoreKeeper.Name = "pnScoreKeeper";
             this.pnScoreKeeper.Size = new System.Drawing.Size(252, 121);
             this.pnScoreKeeper.TabIndex = 7;
-            // 
-            // lbPlayerTurn
-            // 
-            this.lbPlayerTurn.AutoSize = true;
-            this.lbPlayerTurn.Location = new System.Drawing.Point(349, 19);
-            this.lbPlayerTurn.Name = "lbPlayerTurn";
-            this.lbPlayerTurn.Size = new System.Drawing.Size(107, 13);
-            this.lbPlayerTurn.TabIndex = 5;
-            this.lbPlayerTurn.Text = "Zwart is aan de beurt";
+            this.pnScoreKeeper.Paint += new System.Windows.Forms.PaintEventHandler(this.drawScoreKeeper);
             // 
             // tbHelp
             // 
@@ -136,6 +127,7 @@
             this.pnBoard.Name = "pnBoard";
             this.pnBoard.Size = new System.Drawing.Size(200, 100);
             this.pnBoard.TabIndex = 5;
+            this.pnBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.pnBoard_Paint);
             this.pnBoard.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnBoard_MouseClick);
             // 
             // ReversiForm
@@ -148,6 +140,7 @@
             this.Controls.Add(this.gbPreGameControls);
             this.Name = "ReversiForm";
             this.Text = "Reversi";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReversiForm_FormClosing);
             this.gbPreGameControls.ResumeLayout(false);
             this.gbInGameControls.ResumeLayout(false);
             this.gbInGameControls.PerformLayout();
@@ -163,9 +156,8 @@
         private System.Windows.Forms.GroupBox gbInGameControls;
         private System.Windows.Forms.Button btEndGame;
         private System.Windows.Forms.Panel pnBoard;
-        private System.Windows.Forms.Panel pnBoardSize;
-        private System.Windows.Forms.Label lbPlayerTurn;
         private System.Windows.Forms.TrackBar tbHelp;
-        private System.Windows.Forms.Panel pnScoreKeeper;
+        private BufferedPanel pnBoardSize;
+        private BufferedPanel pnScoreKeeper;
     }
 }

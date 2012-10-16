@@ -467,7 +467,13 @@ namespace Reversi
         {
             board[x, y] = currentPlayer;
             players[currentPlayer].stones++;
-            players[stoneAt].stones--;
+            if (stoneAt > 0)
+            {
+                players[stoneAt].stones--;
+            }
+
+            Console.WriteLine("P1: " + players[PLAYER_1].stones);
+            Console.WriteLine("P2: " + players[PLAYER_2].stones);
         }
     }
 }
