@@ -98,12 +98,12 @@ namespace Reversi
                 {
                     int stoneAtPos = currentGame.board[x, y];
                     int drawnStoneAtPos = currentGame.drawnBoard[x, y];
-                    int circleX = (int) (x * currentGame.gridSize) + 2;
-                    int circleY = (int) (y * currentGame.gridSize) + 2;
+                    int circleX = (int)(x * currentGame.gridSize) + 2;
+                    int circleY = (int)(y * currentGame.gridSize) + 2;
 
                     int gridSizeInt = (int)currentGame.gridSize;
 
-                    if (drawnStoneAtPos != stoneAtPos)
+                    if (drawnStoneAtPos != stoneAtPos || (helpClicked % 2 != 0 && stoneAtPos == ReversiGame.STONE_VALID))
                     {
                         switch (stoneAtPos)
                         {
@@ -125,7 +125,32 @@ namespace Reversi
                         }
 
                         currentGame.drawnBoard[x, y] = stoneAtPos;
+
                     }
+                }
+            }
+        }
+
+        private void toggleHelpStones()
+        {
+            for (int x = 0; x < currentGame.boardSize[0]; x++)
+            {
+                for (int y = 0; y < currentGame.boardSize[1]; y++)
+                {
+                    int stoneAtPos = currentGame.board[x, y];
+                    int circleX = (int)(x * currentGame.gridSize) + 2;
+                    int circleY = (int)(y * currentGame.gridSize) + 2;
+
+                    int gridSizeInt = (int)currentGame.gridSize;
+
+                    if (stoneAtPos == ReversiGame.STONE_VALID)
+                    {
+                        if (helpClicked % 2 == 0)
+                            currentGraphics.FillEllipse(currentGame.validMoveBrush, circleX + (gridSizeInt / 6), circleY + (gridSizeInt / 6), gridSizeInt - (gridSizeInt / 3), gridSizeInt - (gridSizeInt / 3));
+                        else
+                            setEmptyStone(x, y, circleX, circleY);
+                    }
+                    currentGame.drawnBoard[x, y] = stoneAtPos;
                 }
             }
         }
@@ -224,8 +249,8 @@ namespace Reversi
         private void btInGameHelp_Click(object sender, EventArgs e)
         {
             helpClicked++;
+            toggleHelpStones();
             Console.WriteLine("CLICK: " + helpClicked);
-            Invalidate();
         }
     }
 }
