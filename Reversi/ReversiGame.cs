@@ -24,13 +24,9 @@ namespace Reversi
 
         public ReversiPlayer[] players = new ReversiPlayer[MAX_PLAYERS + 1];
         public int currentPlayer;
-        public int validOptions;
-        public int newValidOptions;
-        public int oldValidOptions;
         public int helpMode;
-        public bool gameEnded = false;
+        public bool gameEnded;
 
-        public int validMoves;
         public double gridSize;
         public int[] boardSize;
         public int[,] board;
@@ -41,9 +37,10 @@ namespace Reversi
             this.boardSize = boardSize;
             this.board = new int[boardSize[0], boardSize[1]];
             this.drawnBoard = new int[boardSize[0], boardSize[1]];
+            this.gameEnded = false;
             if (boardSize[0] > boardSize[1])
             {
-                this.gridSize = 500 / (double)boardSize[0]; // TODO: schalen?
+                this.gridSize = 500 / (double)boardSize[0];
             }
             else
             {
@@ -87,37 +84,65 @@ namespace Reversi
                 finishTurn(clickPos[0], clickPos[1]);
 
                 currentPlayer++;                                    // Volgende speler
-                if (currentPlayer > MAX_PLAYERS)                    // Als deze speler niet meedoet, terug naar de eerste
+                if (currentPlayer > MAX_PLAYERS)
                 {
                     currentPlayer = PLAYER_1;
                 }
 
-                if (newValidOptions == 0)
+                refreshValidMoves();
+                if (!players[currentPlayer].hasValidMoves)
                 {
-                    oldValidOptions = 0;
-                }
-                else
-                {
-                    oldValidOptions = validOptions;
-                }
-                validOptions = 0;
-
-                refreshValidMoves();                                // Geldige zetten voor de nieuwe speler uitrekenen
-                newValidOptions = validOptions;
-                if (validOptions == 0)
-                {
-                    if (oldValidOptions == 0)
+                    currentPlayer++;
+                    if (currentPlayer > MAX_PLAYERS) 
                     {
-                        gameEnded = true;
+                        currentPlayer = PLAYER_1;
                     }
-                    else
+                    refreshValidMoves();
+                    if (!players[currentPlayer].hasValidMoves)
                     {
-                        currentPlayer++;
-                        if (currentPlayer > MAX_PLAYERS)                     // Als deze speler niet meedoet, terug naar de eerste
+                        int victoriousPlayer = -1;
+                        int numStones = players[PLAYER_1].stones;
+                        for (int i = 2; i <= MAX_PLAYERS; i++)       // Check voor gelijkspel
                         {
-                            currentPlayer = PLAYER_1;
+                            if (numStones != players[i].stones)
+                            {
+                                victoriousPlayer = PLAYER_1;
+                            }
                         }
-                        refreshValidMoves();
+                        if (victoriousPlayer != -1)                 // Als geen gelijkspel, kijk wie gewonnen heeft
+                        {
+                            int mostStones = -1;
+                            for (int i = 1; i <= MAX_PLAYERS; i++)
+                            {
+                                if (players[i].stones > mostStones)
+                                {
+                                    mostStones = players[i].stones;
+                                    victoriousPlayer = i;
+                                }
+                            }
+                        }
+                        
+                        for(int x = 0; x < boardSize[0]; x++)       // Bord vullen
+                        {
+                            for (int y = 0; y < boardSize[1]; y++)
+                            {
+                                if (victoriousPlayer == -1)
+                                {
+                                    for(int i = 1; i <= MAX_PLAYERS; i++)
+                                    {
+                                        if(x % i == 0)
+                                        {
+                                            board[x, y] = i;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    board[x, y] = victoriousPlayer;
+                                }
+                            }
+                        }
+                        gameEnded = true;
                     }
                 }
             }
@@ -161,6 +186,7 @@ namespace Reversi
 
         public void refreshValidMoves()
         {
+            players[currentPlayer].hasValidMoves = false;
             for (int x = 0; x < boardSize[0]; x++)      // voor alle kolommen
             {
                 for (int y = 0; y < boardSize[1]; y++)  // voor alle rijen
@@ -168,17 +194,12 @@ namespace Reversi
                     if (board[x, y] > 0)                // als het een daadwerkelijke steen is
                     {
                         checkValidMovesAround(x, y);          // Mogelijke zetten rond deze steen berekenen
-
-                        if (checkValidMovesAround(x, y) == true)
-                        {
-                            validMoves++;
-                        }
                     }
                 }
             }
         }
 
-        private Boolean checkValidMovesAround(int x, int y)
+        private void checkValidMovesAround(int x, int y)
         {
             for (int i = -1; i <= 1; i++)                   // x-offset
             {
@@ -201,7 +222,7 @@ namespace Reversi
                         if (isValidMove(x + i, y + n))      // Deze zet is voor de huidige speler een geldige zet
                         {
                             board[x + i, y + n] = STONE_VALID;
-                            validOptions++;
+                            players[currentPlayer].hasValidMoves = true;
                         }
                         else                                // Zo niet, is de positie leeg (geen hint-steen, geblokte achtergrond)
                         {
@@ -210,7 +231,6 @@ namespace Reversi
                     }
                 }
             }
-            return true;
         }
 
         private Boolean isValidMove(int x, int y)
@@ -471,9 +491,6 @@ namespace Reversi
             {
                 players[stoneAt].stones--;
             }
-
-            Console.WriteLine("P1: " + players[PLAYER_1].stones);
-            Console.WriteLine("P2: " + players[PLAYER_2].stones);
         }
     }
 }

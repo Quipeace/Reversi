@@ -30,12 +30,15 @@
         {
             this.btStart = new System.Windows.Forms.Button();
             this.gbPreGameControls = new System.Windows.Forms.GroupBox();
-            this.pnBoardSize = new Reversi.BufferedPanel();
+            this.btStartServer = new System.Windows.Forms.Button();
+            this.btConnect = new System.Windows.Forms.Button();
+            this.tbConnect = new System.Windows.Forms.TextBox();
             this.gbInGameControls = new System.Windows.Forms.GroupBox();
-            this.pnScoreKeeper = new Reversi.BufferedPanel();
             this.tbHelp = new System.Windows.Forms.TrackBar();
             this.btEndGame = new System.Windows.Forms.Button();
+            this.pnBoardSize = new Reversi.BufferedPanel();
             this.pnBoard = new Reversi.BufferedPanel();
+            this.pnScoreKeeper = new Reversi.BufferedPanel();
             this.gbPreGameControls.SuspendLayout();
             this.gbInGameControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbHelp)).BeginInit();
@@ -45,9 +48,9 @@
             // 
             this.btStart.Location = new System.Drawing.Point(6, 19);
             this.btStart.Name = "btStart";
-            this.btStart.Size = new System.Drawing.Size(75, 121);
+            this.btStart.Size = new System.Drawing.Size(81, 121);
             this.btStart.TabIndex = 3;
-            this.btStart.Text = "Start";
+            this.btStart.Text = "Start SinglePlayer";
             this.btStart.UseVisualStyleBackColor = true;
             this.btStart.Click += new System.EventHandler(this.btStart_Click);
             // 
@@ -55,6 +58,9 @@
             // 
             this.gbPreGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbPreGameControls.Controls.Add(this.btStartServer);
+            this.gbPreGameControls.Controls.Add(this.btConnect);
+            this.gbPreGameControls.Controls.Add(this.tbConnect);
             this.gbPreGameControls.Controls.Add(this.pnBoardSize);
             this.gbPreGameControls.Controls.Add(this.btStart);
             this.gbPreGameControls.Location = new System.Drawing.Point(12, 12);
@@ -64,17 +70,32 @@
             this.gbPreGameControls.TabStop = false;
             this.gbPreGameControls.Text = "New Game";
             // 
-            // pnBoardSize
+            // btStartServer
             // 
-            this.pnBoardSize.BackColor = System.Drawing.Color.Transparent;
-            this.pnBoardSize.Location = new System.Drawing.Point(87, 19);
-            this.pnBoardSize.Name = "pnBoardSize";
-            this.pnBoardSize.Size = new System.Drawing.Size(121, 121);
-            this.pnBoardSize.TabIndex = 4;
-            this.pnBoardSize.Paint += new System.Windows.Forms.PaintEventHandler(this.drawBoardSizeSelector);
-            this.pnBoardSize.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnBoardSize_MouseClick);
-            this.pnBoardSize.MouseLeave += new System.EventHandler(this.pnBoardSize_MouseLeave);
-            this.pnBoardSize.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnBoardSize_MouseMove);
+            this.btStartServer.Location = new System.Drawing.Point(289, 45);
+            this.btStartServer.Name = "btStartServer";
+            this.btStartServer.Size = new System.Drawing.Size(118, 20);
+            this.btStartServer.TabIndex = 7;
+            this.btStartServer.Text = "Start Server";
+            this.btStartServer.UseVisualStyleBackColor = true;
+            this.btStartServer.Click += new System.EventHandler(this.btStartServer_Click);
+            // 
+            // btConnect
+            // 
+            this.btConnect.Location = new System.Drawing.Point(413, 19);
+            this.btConnect.Name = "btConnect";
+            this.btConnect.Size = new System.Drawing.Size(81, 121);
+            this.btConnect.TabIndex = 6;
+            this.btConnect.Text = "Start MultiPlayer";
+            this.btConnect.UseVisualStyleBackColor = true;
+            this.btConnect.Click += new System.EventHandler(this.btConnect_Click);
+            // 
+            // tbConnect
+            // 
+            this.tbConnect.Location = new System.Drawing.Point(289, 19);
+            this.tbConnect.Name = "tbConnect";
+            this.tbConnect.Size = new System.Drawing.Size(118, 20);
+            this.tbConnect.TabIndex = 5;
             // 
             // gbInGameControls
             // 
@@ -90,14 +111,6 @@
             this.gbInGameControls.TabStop = false;
             this.gbInGameControls.Text = "In Game";
             this.gbInGameControls.Visible = false;
-            // 
-            // pnScoreKeeper
-            // 
-            this.pnScoreKeeper.Location = new System.Drawing.Point(91, 19);
-            this.pnScoreKeeper.Name = "pnScoreKeeper";
-            this.pnScoreKeeper.Size = new System.Drawing.Size(252, 121);
-            this.pnScoreKeeper.TabIndex = 7;
-            this.pnScoreKeeper.Paint += new System.Windows.Forms.PaintEventHandler(this.drawScoreKeeper);
             // 
             // tbHelp
             // 
@@ -115,11 +128,23 @@
             // 
             this.btEndGame.Location = new System.Drawing.Point(6, 19);
             this.btEndGame.Name = "btEndGame";
-            this.btEndGame.Size = new System.Drawing.Size(75, 121);
+            this.btEndGame.Size = new System.Drawing.Size(81, 121);
             this.btEndGame.TabIndex = 0;
             this.btEndGame.Text = "End Game";
             this.btEndGame.UseVisualStyleBackColor = true;
             this.btEndGame.Click += new System.EventHandler(this.btEndGame_Click);
+            // 
+            // pnBoardSize
+            // 
+            this.pnBoardSize.BackColor = System.Drawing.Color.Transparent;
+            this.pnBoardSize.Location = new System.Drawing.Point(93, 19);
+            this.pnBoardSize.Name = "pnBoardSize";
+            this.pnBoardSize.Size = new System.Drawing.Size(121, 121);
+            this.pnBoardSize.TabIndex = 4;
+            this.pnBoardSize.Paint += new System.Windows.Forms.PaintEventHandler(this.pnBoardSize_Paint);
+            this.pnBoardSize.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnBoardSize_MouseClick);
+            this.pnBoardSize.MouseLeave += new System.EventHandler(this.pnBoardSize_MouseLeave);
+            this.pnBoardSize.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnBoardSize_MouseMove);
             // 
             // pnBoard
             // 
@@ -130,18 +155,27 @@
             this.pnBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.pnBoard_Paint);
             this.pnBoard.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnBoard_MouseClick);
             // 
+            // pnScoreKeeper
+            // 
+            this.pnScoreKeeper.Location = new System.Drawing.Point(129, 19);
+            this.pnScoreKeeper.Name = "pnScoreKeeper";
+            this.pnScoreKeeper.Size = new System.Drawing.Size(252, 121);
+            this.pnScoreKeeper.TabIndex = 7;
+            this.pnScoreKeeper.Paint += new System.Windows.Forms.PaintEventHandler(this.drawScoreKeeper);
+            // 
             // ReversiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(524, 171);
-            this.Controls.Add(this.gbInGameControls);
-            this.Controls.Add(this.pnBoard);
             this.Controls.Add(this.gbPreGameControls);
+            this.Controls.Add(this.pnBoard);
+            this.Controls.Add(this.gbInGameControls);
             this.Name = "ReversiForm";
             this.Text = "Reversi";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReversiForm_FormClosing);
             this.gbPreGameControls.ResumeLayout(false);
+            this.gbPreGameControls.PerformLayout();
             this.gbInGameControls.ResumeLayout(false);
             this.gbInGameControls.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbHelp)).EndInit();
@@ -151,13 +185,16 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btStart;
+        public System.Windows.Forms.Button btStart;
         private System.Windows.Forms.GroupBox gbPreGameControls;
         private System.Windows.Forms.GroupBox gbInGameControls;
         private System.Windows.Forms.Button btEndGame;
-        private System.Windows.Forms.Panel pnBoard;
         private System.Windows.Forms.TrackBar tbHelp;
         private BufferedPanel pnBoardSize;
         private BufferedPanel pnScoreKeeper;
+        public BufferedPanel pnBoard;
+        private System.Windows.Forms.Button btConnect;
+        private System.Windows.Forms.TextBox tbConnect;
+        private System.Windows.Forms.Button btStartServer;
     }
 }

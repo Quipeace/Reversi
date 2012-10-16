@@ -9,10 +9,12 @@ namespace Reversi
     class ReversiPlayer
     {
         public int stones;
+        public Boolean hasValidMoves;
 
         public ReversiPlayer()
         {
             this.stones = 2;
+            this.hasValidMoves = true;
         }
     }
 }

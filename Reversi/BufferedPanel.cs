@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace Reversi
 {
-    class BufferedPanel : Panel
+    public class BufferedPanel : Panel
     {
         public BufferedPanel()
         {

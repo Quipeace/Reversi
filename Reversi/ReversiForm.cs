@@ -38,13 +38,56 @@ namespace Reversi
             this.gridGreenDark = new SolidBrush(Color.FromArgb(83, 160, 0));
 
             this.BackColor = Color.FromArgb(93, 181, 0);
+
+            this.tbConnect.Text = Program.hostName;
         }
 
         private void ReversiForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.animateCurrentPlayerIndicator = false;
+
+            Server.runServer = false;
+            Client.runClient = false;
+            if (Server.listener != null)
+            {
+                Server.listener.Stop();
+            }
+            if (Client.tcpClient != null)
+            {
+                Client.tcpClient.Close();
+            }
         }
 
+        // ----------
+        // Server/Client starter
+        // ----------
+        private void btConnect_Click(object sender, EventArgs e)
+        {
+            if (!Client.runClient)
+            {
+                Client.runClient = true;
+                Thread client = new Thread(() => Client.start(tbConnect.Text, this));
+                client.Start();
+            }
+        }
+        private void btStartServer_Click(object sender, EventArgs e)
+        {
+            if (!Server.runServer)
+            {
+                Server.runServer = true;
+                Thread server = new Thread(() => Server.start(this));
+                server.Start();
+            }
+        }
+
+        // ----------
+        // Start game button, met callback voor starten vanuit server/client
+        // ----------
+        public delegate void startGameCallback();
+        public void startGame()
+        {
+            btStart.PerformClick();
+        }
         private void btStart_Click(object sender, EventArgs e)
         {
             this.gbInGameControls.Visible = true;
@@ -56,7 +99,7 @@ namespace Reversi
 
             boardBitmapGraphics = Graphics.FromImage(boardBitmap);
 
-            currentPlayerIndicatorThread = new Thread(updateCurrentPlayerThread);
+            currentPlayerIndicatorThread = new Thread(currentPlayerIndicatorAnimator);
             animateCurrentPlayerIndicator = true;
             currentPlayerIndicatorThread.Start();
 
@@ -70,6 +113,9 @@ namespace Reversi
             drawStones();                       // Stenen tekenen
         }
 
+        // ----------
+        // Game stoppen
+        // ----------
         private void btEndGame_Click(object sender, EventArgs e)
         {
             this.animateCurrentPlayerIndicator = false;
@@ -78,40 +124,67 @@ namespace Reversi
             this.gbInGameControls.Visible = false;
 
             this.Size = new Size(540, 210);
+
+            if (Client.isConnected)
+            {
+                Client.waitingString = "ENDGAME";
+            }
+            else if(Server.isConnected)
+            {
+                Server.waitingString = "ENDGAME";
+            }
         }
 
+        // ----------
+        // Een klik op het speelveld, vanuit de UI en server/client
+        // ----------
         private void pnBoard_MouseClick(object sender, MouseEventArgs e)
         {
-            int[] gridPos = {(int)(e.X / currentGame.gridSize), (int)(e.Y / currentGame.gridSize)};
+            if (Client.isConnected && currentGame.currentPlayer == ReversiGame.PLAYER_1)
+            {
+                return;
+            }
+            else if (Server.isConnected && currentGame.currentPlayer == ReversiGame.PLAYER_2)
+            {
+                return;
+            }
+
+            if (Client.isConnected)
+            {
+                Client.waitingString = "MOVE@" + e.X + "," + e.Y;
+            }
+            else
+            {
+                Server.waitingString = "MOVE@" + e.X + "," + e.Y;
+            }
+
+            handleBoardMouseClick(e.X, e.Y);
+        }
+        public void handleBoardMouseClick(int x, int y)
+        {
+            int[] gridPos = { (int)(x / currentGame.gridSize), (int)(y / currentGame.gridSize) };
 
             currentGame.processTurn(gridPos);
-
-            if (((currentGame.players[ReversiGame.PLAYER_1].stones + currentGame.players[ReversiGame.PLAYER_2].stones) == (currentGame.boardSize[0] * currentGame.boardSize[1])) || currentGame.gameEnded == true)
-            {
-                if (currentGame.players[ReversiGame.PLAYER_1].stones > currentGame.players[ReversiGame.PLAYER_2].stones)
-                {
-                    //lbPlayerTurn.Text = "Zwart heeft gewonnen";
-                }
-                else if (currentGame.players[ReversiGame.PLAYER_1].stones == currentGame.players[ReversiGame.PLAYER_2].stones)
-                {
-                   // lbPlayerTurn.Text = "Gelijkspel";
-                }
-                else
-                {
-                   // lbPlayerTurn.Text = "Wit heeft gewonnen";
-                }
-            }
             drawStones();
+
+            if (currentGame.gameEnded)
+            {
+                animateCurrentPlayerIndicator = false;
+            }
+
             pnScoreKeeper.Invalidate();
         }
 
+
+        // ----------
+        // Boardsize-selector handlers
+        // ----------
         private void pnBoardSize_MouseClick(object sender, MouseEventArgs e)
         {
             boardSizeSelectorPos[0] = boardSizeMoveSelectorPos[0];
             boardSizeSelectorPos[1] = boardSizeMoveSelectorPos[1];
             pnBoardSize.Invalidate();
         }
-
         private void pnBoardSize_MouseMove(object sender, MouseEventArgs e)
         {
             drawMoveSelector = true;
@@ -129,7 +202,6 @@ namespace Reversi
                 pnBoardSize.Invalidate();
             }
         }
-
         private void pnBoardSize_MouseLeave(object sender, EventArgs e)
         {
             drawMoveSelector = false;
@@ -147,14 +219,12 @@ namespace Reversi
             paintEventArgs.Graphics.DrawImage(boardBitmap, 0, 0);
         }
 
-        private void drawBoardSizeSelector(object obj, PaintEventArgs paintEventArgs)
+        private void pnBoardSize_Paint(object obj, PaintEventArgs paintEventArgs)
         {
             Graphics graphics = paintEventArgs.Graphics;
 
             int gridWidth = pnBoardSize.Width - 1;
             int gridSize = (gridWidth / ReversiGame.MAX_BOARDSIZE);                                // (Panel width / number of fields)
-
-            Console.WriteLine("boardsize; " + boardSizeSelectorPos[0]);
 
             int endX = (int)(boardSizeSelectorPos[0] * gridSize);                                  // Geselecteerde boardsize
             int endY = (int)(boardSizeSelectorPos[1] * gridSize);
@@ -187,34 +257,34 @@ namespace Reversi
             graphics.DrawLine(linePen, 0, gridWidth, gridWidth, gridWidth);
         }
 
-        private void updateCurrentPlayerThread()
+        private void currentPlayerIndicatorAnimator()
         {
-            Boolean increase = true;
+            Boolean increaseTransparency = true;
             while (animateCurrentPlayerIndicator)
             {
-                if (increase)
+                if (increaseTransparency)
                 {
                     currentPlayerIndicatorTransparency += 20;
+                    if (currentPlayerIndicatorTransparency > 255)
+                    {
+                        increaseTransparency = false;
+                        currentPlayerIndicatorTransparency = 255;
+                    }
                 }
                 else
                 {
                     currentPlayerIndicatorTransparency -= 20;
+                    if(currentPlayerIndicatorTransparency < 0)
+                    {
+                        increaseTransparency = true;
+                        currentPlayerIndicatorTransparency = 0;
+                    }
                 }
-
-                if (currentPlayerIndicatorTransparency > 255)
-                {
-                    increase = false;
-                    currentPlayerIndicatorTransparency = 255;
-                }
-                else if(currentPlayerIndicatorTransparency < 0)
-                {
-                    increase = true;
-                    currentPlayerIndicatorTransparency = 0;
-                }
-
                 pnScoreKeeper.Invalidate();
                 Thread.Sleep(40);
             }
+            currentPlayerIndicatorTransparency = 0;
+            pnScoreKeeper.Invalidate();
         }
         private void drawScoreKeeper(object obj, PaintEventArgs paintEventArgs)
         {
@@ -301,9 +371,7 @@ namespace Reversi
                                 drawStoneThread.Start();
                                 break;
                         }
-
                         currentGame.drawnBoard[x, y] = stoneAtPos;
-
                     }
                 }
             }
@@ -363,7 +431,6 @@ namespace Reversi
                         {
                             lock (boardBitmapGraphics)
                             {
-                                Console.WriteLine("HI");
                                 boardBitmapGraphics.FillEllipse(validMoveBrush, circleX + (gridSizeInt / 6), circleY + (gridSizeInt / 6), gridSizeInt - (gridSizeInt / 3), gridSizeInt - (gridSizeInt / 3));
                             }
                         }
