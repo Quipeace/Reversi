@@ -78,27 +78,26 @@ namespace Reversi
 
                     if (input != null)
                     {
-                        Console.WriteLine("INPUT: " + input);
-                        if (input.Contains("START:"))
+                        if (input.StartsWith("START:"))         // De client heeft een spel gestart met coordinaten gescheiden door een comma
                         {
-                            input = input.Substring(5);
-                            string[] size = input.Split(',');
-                            currentForm.boardSizeSelectorPos[0] = int.Parse(size[0]);
+                            input = input.Substring(6);         // "START:" gedeelte weghalen
+                            string[] size = input.Split(',');   // Overgebleven string splitsen op de komma
+                            currentForm.boardSizeSelectorPos[0] = int.Parse(size[0]);   // Boardsize zetten in het form
                             currentForm.boardSizeSelectorPos[1] = int.Parse(size[1]);
                             currentForm.Invoke(new ReversiForm.startGameCallback(currentForm.startGame));   // Start game button laten "klikken"
                         }
-                        else if (input.Contains("MOVE@"))
+                        else if (input.StartsWith("MOVE@"))     // De client doet een zet met een muisklik op de coordinaten door een komma gescheiden
                         {
-                            input = input.Substring(5);
+                            input = input.Substring(5);         // Zelfde verhaal als hierboven
                             string[] coordinates = input.Split(',');
                             int x = int.Parse(coordinates[0]);
                             int y = int.Parse(coordinates[1]);
 
                             currentForm.handleBoardMouseClick(x, y);
                         }
-                        else if (input.Equals("ENDGAME"))
+                        else if (input.Equals("ENDGAME"))       // De client heeft het spel gestopt, stop deze worker en verbreek de verbinding
                         {
-                            runWorkers = false;         // Game ended, worker stoppen
+                            runWorkers = false;
                         }
                     }
                     else
@@ -108,7 +107,7 @@ namespace Reversi
                 }
                 catch (IOException)
                 {
-                    runWorkers = false;                 // IOException, netjes sluiten
+                    runWorkers = false;                 // IOException, worker stoppen
                 }
             }
         }

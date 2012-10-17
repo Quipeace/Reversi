@@ -22,6 +22,10 @@ namespace Reversi
         public const int PLAYER_1 = 1;
         public const int PLAYER_2 = 2;
 
+        private List<Point> bestMoves = new List<Point>();
+        private int newBestMoveStones = 0;
+        private int bestMoveStones = 0;
+
         public ReversiPlayer[] players = new ReversiPlayer[MAX_PLAYERS + 1];    // Spelers beginnen op postitie 1
         public int currentPlayer;                                               // Huidige speler
         public int helpMode;                                                    // Huidige helpmodus
@@ -76,7 +80,7 @@ namespace Reversi
         {
             int stoneAt = board[clickPos[0], clickPos[1]];        // Steen op deze positie
 
-            if (stoneAt == STONE_VALID)                           // Als de positie een geldige zet is voor deze speler
+            if (stoneAt == STONE_VALID || stoneAt == STONE_BESTMOVE)  // Als de positie een geldige zet is voor deze speler
             {
                 board[clickPos[0], clickPos[1]] = currentPlayer;  // Huidige positie heeft nu de steen van de speler
                 players[currentPlayer].stones++;                  // Aantal stenen ééntje ophogen
@@ -186,6 +190,9 @@ namespace Reversi
 
         public void refreshValidMoves()                 // Valide moves uitrekenen voor huidige speler
         {
+            bestMoveStones = 0;
+            bestMoves.Clear();
+
             players[currentPlayer].hasValidMoves = false;
             for (int x = 0; x < boardSize[0]; x++)      // voor alle kolommen
             {
@@ -196,6 +203,11 @@ namespace Reversi
                         checkValidMovesAround(x, y);    // Mogelijke zetten rond deze steen berekenen
                     }
                 }
+            }
+
+            foreach(Point point in bestMoves)
+            {
+                board[point.X, point.Y] = STONE_BESTMOVE;
             }
         }
 
@@ -235,46 +247,62 @@ namespace Reversi
 
         private Boolean isValidMove(int x, int y)           // Uitrekenen of deze zet valide zou zijn
         {
+           bool isValid = false;
+           newBestMoveStones = 0;
+
            if (isLeftValid(x, y, false))                    // Als één richting valid is, is de move geldig
            {
-               return true;
+               isValid = true;
            }
-           else if (isRightValid(x, y, false))
+           if (isRightValid(x, y, false))
            {
-               return true;
+               isValid = true;
            }
-           else if (isUpValid(x, y, false))
+           if (isUpValid(x, y, false))
            {
-               return true;
+               isValid = true;
            }
-           else if (isDownValid(x, y, false))
+           if (isDownValid(x, y, false))
            {
-               return true;
+               isValid = true;
            }
-           else if (isLeftUpValid(x, y, false))
+           if (isLeftUpValid(x, y, false))
            {
-               return true;
+               isValid = true;
            }
-           else if (isRightUpValid(x, y, false))
+           if (isRightUpValid(x, y, false))
            {
-               return true;
+               isValid = true;
            }
-           else if (isLeftDownValid(x, y, false))
+           if (isLeftDownValid(x, y, false))
            {
-               return true;
+               isValid = true;
            }
-           else if (isRightDownValid(x, y, false))
+           if (isRightDownValid(x, y, false))
            {
-               return true;
+               isValid = true;
            }
-           else
+
+           if (isValid)
            {
-               return false;
+               if (newBestMoveStones > bestMoveStones)
+               {
+                   bestMoveStones = newBestMoveStones;
+                   bestMoves.Clear();
+                   bestMoves.Add(new Point(x, y));
+               }
+               else if (newBestMoveStones == bestMoveStones)
+               {
+                   bestMoves.Add(new Point(x, y));
+               }
            }
+
+           return isValid;
         }
 
         private bool isLeftValid(int x, int y, bool setStone)
         {
+            int iterations = 0;
             for (int i = x - 1; i >= 0; i--)                         // Naar links
             {
                 int currentStone = board[i, y];
@@ -289,17 +317,20 @@ namespace Reversi
                 }
                 else if (currentStone == currentPlayer)             // Als de eerste steen niet van de speler was, maar daarna wel is het een geldige zet
                 {
+                    newBestMoveStones += iterations;
                     return true;
                 }
                 else if (setStone)                                  // Als setStone true is tussenliggende stenen al zetten
                 {
                     setStoneAt(i, y, currentStone);
                 }
+                iterations++;
             }
             return false;
         }
         private bool isRightValid(int x, int y, bool setStone)
         {
+            int iterations = 0;
             for (int i = x + 1; i < boardSize[0]; i++)              // Naar rechts
             {
                 int currentStone = board[i, y];
@@ -313,17 +344,20 @@ namespace Reversi
                 }
                 else if (currentStone == currentPlayer)
                 {
+                    newBestMoveStones += iterations;
                     return true;
                 }
                 else if (setStone)
                 {
                     setStoneAt(i, y, currentStone);
                 }
+                iterations++;
             }
             return false;
         }
         private bool isUpValid(int x, int y, bool setStone)
         {
+            int iterations = 0;
             for (int i = y - 1; i >= 0; i--)                         // Omhoog
             {
                 int currentStone = board[x, i];
@@ -337,17 +371,20 @@ namespace Reversi
                 }
                 else if (currentStone == currentPlayer)
                 {
+                    newBestMoveStones += iterations;
                     return true;
                 }
                 else if (setStone)
                 {
                     setStoneAt(x, i, currentStone);
                 }
+                iterations++;
             }
             return false;
         }
         private bool isDownValid(int x, int y, bool setStone)
         {
+            int iterations = 0;
             for (int i = y + 1; i < boardSize[1]; i++)              // Naar beneden
             {
                 int currentStone = board[x, i];
@@ -361,17 +398,20 @@ namespace Reversi
                 }
                 else if (currentStone == currentPlayer)
                 {
+                    newBestMoveStones += iterations;
                     return true;
                 }
                 else if (setStone)
                 {
                     setStoneAt(x, i, currentStone);
                 }
+                iterations++;
             }
             return false;
         }
         private bool isLeftUpValid(int x, int y, bool setStone)         // Links omhoog
         {
+            int iterations = 0;
             for (int i = 1; i < boardSize[0] && i < boardSize[1]; i++) 
             {
                 if (x - i < 0 || y - i < 0)                    
@@ -389,17 +429,20 @@ namespace Reversi
                 }
                 else if (currentStone == currentPlayer)
                 {
+                    newBestMoveStones += iterations;
                     return true;
                 }
                 else if (setStone)
                 {
                     setStoneAt(x - i, y - i, currentStone);
                 }
+                iterations++;
             }
             return false;
         }
         private bool isRightUpValid(int x, int y, bool setStone)        // Rechts omhoog
         {
+            int iterations = 0;
             for (int i = 1; i < boardSize[0] && i < boardSize[1]; i++) 
             {
                 if (x + i >= boardSize[0] || y - i < 0)
@@ -417,17 +460,20 @@ namespace Reversi
                 }
                 else if (currentStone == currentPlayer)
                 {
+                    newBestMoveStones += iterations;
                     return true;
                 }
                 else if (setStone)
                 {
                     setStoneAt(x + i, y - i, currentStone);
                 }
+                iterations++;
             }
             return false;
         }
         private bool isLeftDownValid(int x, int y, bool setStone)       // Links naar beneden
         {
+            int iterations = 0;
             for (int i = 1; i < boardSize[0] && i < boardSize[1]; i++) 
             {
                 if (x - i < 0 || y + i >= boardSize[1])
@@ -445,17 +491,20 @@ namespace Reversi
                 }
                 else if (currentStone == currentPlayer)
                 {
+                    newBestMoveStones += iterations;
                     return true;
                 }
                 else if (setStone)
                 {
                     setStoneAt(x - i, y + i, currentStone);
                 }
+                iterations++;
             }
             return false;
         }
         private bool isRightDownValid(int x, int y, bool setStone)      // Rechts naar beneden
         {
+            int iterations = 0;
             for (int i = 1; i < boardSize[0] && i < boardSize[1]; i++)
             {
                 if (x + i >= boardSize[0] || y + i >= boardSize[1])
@@ -473,12 +522,14 @@ namespace Reversi
                 }
                 else if (currentStone == currentPlayer)
                 {
+                    newBestMoveStones += iterations;
                     return true;
                 }
                 else if (setStone)
                 {
                     setStoneAt(x + i, y + i, currentStone);
                 }
+                iterations++;
             }
             return false;
         }

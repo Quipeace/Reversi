@@ -17,7 +17,6 @@ namespace Reversi
         static void Main()
         {
             hostName = Dns.GetHostName();
-
             Application.EnableVisualStyles();
             Application.Run(new ReversiForm());
         }

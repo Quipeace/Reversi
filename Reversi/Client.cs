@@ -21,7 +21,7 @@ namespace Reversi
 
         public static void start(string hostName, ReversiForm form)
         {
-            if (isConnected)                        // Als is verbonden, nieuwe clients 
+            if (isConnected)                        // Als is verbonden, nieuwe clients meteen sluiten
             {
                 return;
             }
@@ -62,7 +62,7 @@ namespace Reversi
             isConnected = false;
         }
 
-        private static void read()                                  // Zelfde als in server
+        private static void read()      // Hieronder veelal hetzelfde als in server!
         {
             while (runClient)
             {
@@ -72,14 +72,7 @@ namespace Reversi
 
                     if (input != null)
                     {
-                        if (input.Contains("START:"))
-                        {
-                            input = input.Substring(6);
-                            string[] coordinates = input.Split(',');
-                            int x = int.Parse(coordinates[0]);
-                            int y = int.Parse(coordinates[1]);
-                        }
-                        else if (input.Contains("MOVE@"))
+                        if (input.Contains("MOVE@")) 
                         {
                             input = input.Substring(5);
                             string[] coordinates = input.Split(',');

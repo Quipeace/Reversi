@@ -34,6 +34,9 @@
             this.btConnect = new System.Windows.Forms.Button();
             this.tbConnect = new System.Windows.Forms.TextBox();
             this.gbInGameControls = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.tbHelp = new System.Windows.Forms.TrackBar();
             this.btEndGame = new System.Windows.Forms.Button();
             this.pnBoardSize = new Reversi.BufferedPanel();
@@ -101,6 +104,9 @@
             // 
             this.gbInGameControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbInGameControls.Controls.Add(this.label3);
+            this.gbInGameControls.Controls.Add(this.label2);
+            this.gbInGameControls.Controls.Add(this.label1);
             this.gbInGameControls.Controls.Add(this.pnScoreKeeper);
             this.gbInGameControls.Controls.Add(this.tbHelp);
             this.gbInGameControls.Controls.Add(this.btEndGame);
@@ -111,6 +117,33 @@
             this.gbInGameControls.TabStop = false;
             this.gbInGameControls.Text = "In Game";
             this.gbInGameControls.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(422, 120);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(21, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Off";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(425, 26);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(18, 13);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "All";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(417, 73);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(26, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Mild";
             // 
             // tbHelp
             // 
@@ -196,5 +229,8 @@
         private System.Windows.Forms.Button btConnect;
         private System.Windows.Forms.TextBox tbConnect;
         private System.Windows.Forms.Button btStartServer;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }

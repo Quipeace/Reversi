@@ -29,8 +29,8 @@ namespace Reversi
         {
             this.InitializeComponent();
 
-            this.validMoveBrush = new SolidBrush(Color.FromArgb(150, 150, 150, 150));
-            this.bestMoveBrush = new SolidBrush(Color.FromArgb(150, 150, 150));
+            this.validMoveBrush = new SolidBrush(Color.FromArgb(255, 90, 150, 150));
+            this.bestMoveBrush = new SolidBrush(Color.FromArgb(255, 255, 225, 30));
             this.brushGridGreenLight = new SolidBrush(Color.FromArgb(106, 206, 0));
             this.brushGridGreenDark = new SolidBrush(Color.FromArgb(83, 160, 0));
 
@@ -147,7 +147,7 @@ namespace Reversi
             {
                 Client.writeMessage("MOVE@" + e.X + "," + e.Y);
             }
-            else
+            else if(Server.isConnected)
             {
                 Server.writeMessage("MOVE@" + e.X + "," + e.Y);
             }
@@ -335,17 +335,34 @@ namespace Reversi
                         switch (stoneAtPos)
                         {
                             case ReversiGame.STONE_VALID:                               // Valid "steen"
-                                if (currentGame.helpMode == ReversiGame.HELP_MILD)      // Als help aanstaat, tekenen
+                                if (currentGame.helpMode == ReversiGame.HELP_FULL || currentGame.helpMode == ReversiGame.HELP_MILD)
                                 {
-                                    lock (boardBitmapGraphics)                          // Lock op graphics, andere threads moeten wachten
+                                    lock (boardBitmapGraphics)
                                     {
                                         boardBitmapGraphics.FillEllipse(validMoveBrush, circleX + (gridSizeInt / 6), circleY + (gridSizeInt / 6), gridSizeInt - (gridSizeInt / 3), gridSizeInt - (gridSizeInt / 3));
                                     }
                                 }
-                                else if (currentGame.helpMode == ReversiGame.HELP_FULL) // Help staat volledig aan, beste steen 
+                                else
                                 {
+                                    setEmptyField(x, y, circleX, circleY);
                                 }
-                                else                                                     // Help staat uit, leeg vakje tekenen
+                                break;
+                            case ReversiGame.STONE_BESTMOVE:
+                                if (currentGame.helpMode == ReversiGame.HELP_FULL) // Help staat volledig aan, beste steen 
+                                {
+                                    lock (boardBitmapGraphics)                          // Lock op graphics, andere threads moeten wachten
+                                    {
+                                        boardBitmapGraphics.FillEllipse(bestMoveBrush, circleX + (gridSizeInt / 6), circleY + (gridSizeInt / 6), gridSizeInt - (gridSizeInt / 3), gridSizeInt - (gridSizeInt / 3));
+                                    }
+                                }
+                                else if (currentGame.helpMode == ReversiGame.HELP_MILD) // Help staat uit, leeg vakje tekenen
+                                {
+                                    lock (boardBitmapGraphics)
+                                    {
+                                        boardBitmapGraphics.FillEllipse(validMoveBrush, circleX + (gridSizeInt / 6), circleY + (gridSizeInt / 6), gridSizeInt - (gridSizeInt / 3), gridSizeInt - (gridSizeInt / 3));
+                                    }
+                                }
+                                else
                                 {
                                     setEmptyField(x, y, circleX, circleY);
                                 }
@@ -418,15 +435,33 @@ namespace Reversi
 
                     if (stoneAtPos == ReversiGame.STONE_VALID)
                     {
-                        if (currentGame.helpMode == ReversiGame.HELP_MILD)
+                        if (currentGame.helpMode == ReversiGame.HELP_FULL || currentGame.helpMode == ReversiGame.HELP_MILD)
                         {
                             lock (boardBitmapGraphics)
                             {
                                 boardBitmapGraphics.FillEllipse(validMoveBrush, circleX + (gridSizeInt / 6), circleY + (gridSizeInt / 6), gridSizeInt - (gridSizeInt / 3), gridSizeInt - (gridSizeInt / 3));
                             }
                         }
-                        else if (currentGame.helpMode == ReversiGame.HELP_FULL)
+                        else
                         {
+                            setEmptyField(x, y, circleX, circleY);
+                        }
+                    }
+                    else if (stoneAtPos == ReversiGame.STONE_BESTMOVE)
+                    {
+                        if (currentGame.helpMode == ReversiGame.HELP_FULL) // Help staat volledig aan, beste steen 
+                        {
+                            lock (boardBitmapGraphics)                          // Lock op graphics, andere threads moeten wachten
+                            {
+                                boardBitmapGraphics.FillEllipse(bestMoveBrush, circleX + (gridSizeInt / 6), circleY + (gridSizeInt / 6), gridSizeInt - (gridSizeInt / 3), gridSizeInt - (gridSizeInt / 3));
+                            }
+                        }
+                        else if (currentGame.helpMode == ReversiGame.HELP_MILD) // Help staat uit, leeg vakje tekenen
+                        {
+                            lock (boardBitmapGraphics)
+                            {
+                                boardBitmapGraphics.FillEllipse(validMoveBrush, circleX + (gridSizeInt / 6), circleY + (gridSizeInt / 6), gridSizeInt - (gridSizeInt / 3), gridSizeInt - (gridSizeInt / 3));
+                            }
                         }
                         else
                         {
