@@ -11,13 +11,14 @@ namespace Reversi
 {
     class Server
     {
-        public static bool runServer = false;
-        private static bool runWorkers = false;
-        public static Boolean isConnected = false;
-        private static ReversiForm currentForm;
-        public static TcpListener listener;
+        public static bool runServer = false;       // Of de server mag draaien
+        private static bool runWorkers = false;     // Of eventuele workers mogen draaien
+        public static Boolean isConnected = false;  // Server is verbonden ja/nee
+        private static ReversiForm currentForm;     // Form dat behandeld moet worden
+        public static TcpListener listener;         // Huidige listener
 
-        public static string waitingString = "";
+        private static StreamReader reader;         // Voor lezen
+        private static StreamWriter writer;         // Voor schrijven
 
         public static void start(ReversiForm form)
         {
@@ -25,20 +26,17 @@ namespace Reversi
 
             while (runServer)
             {
-                listener = new TcpListener(1337);       // Deprecated.. Lokaal adres filteren gaat wellicht wat out-of-scope...
-                listener.Server.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, 1);
-                listener.Start();
+                listener = new TcpListener(1337);       // Deprecated.. Lokaal adres filteren gaat wellicht wat out-of-scope..?
+                listener.Server.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, 1);    // Mag reused worden
+                listener.Start();                       // Listener starten
 
                 try
                 {
-                    Console.WriteLine("SERVER CONNECTING");
-                    Socket socket = listener.AcceptSocket();
+                    Socket socket = listener.AcceptSocket();                                        // Verbinding accepteren
 
-                    currentForm.btStart.Invoke(new ReversiForm.startGameCallback(form.startGame));
-
-                    onServerConnected(socket);
+                    onServerConnected(socket);                                                      // Server is verbonden, verder laten afhandelen
                 }
-                catch (SocketException e)
+                catch (SocketException)
                 {
                 }
 
@@ -48,49 +46,44 @@ namespace Reversi
         }
 
         private static void onServerConnected(Socket socket)
-        {
-            isConnected = true;
-            Console.WriteLine("SERVER CONNECTED");
+        {   
+            isConnected = true;                         // Server is verbonden
 
-            Stream stream = new NetworkStream(socket);
-            StreamReader reader = new StreamReader(stream);
-            StreamWriter writer = new StreamWriter(stream);
-            writer.AutoFlush = true;
+            Stream stream = new NetworkStream(socket);  // Stream ophalen en "splitsen"
+            reader = new StreamReader(stream);
+            writer = new StreamWriter(stream);
+            writer.AutoFlush = true;                    // Meteen schrijven
 
-            waitingString = "";
-            runWorkers = true;
+            read();                                     // Lees-loop
 
-            Thread readerT = new Thread(() => readerThread(reader));
-            readerT.Start();
-            Thread writerT = new Thread(() => writerThread(writer));
-            writerT.Start();
-
-            readerT.Join();
-            writerT.Join();
-
-            writer.Close();
+            writer.Close();                             // Netjes afsluiten
             reader.Close();
             stream.Close();
             socket.Close();
 
-            Console.WriteLine("SERVER CLOSED");
-            isConnected = false;
+            isConnected = false;                        // Niet meer verbonden
         }
 
-        private static void readerThread(StreamReader reader)
+        private static void read()
         {
+            runWorkers = true;                          // Worker mag draaien
             while (runWorkers)
             {
                 try
                 {
-                    Console.WriteLine("SERVER WAIT FOR IN");
                     String input = reader.ReadLine();
-
-                    Console.WriteLine("SERVER INPUT: " + input);
 
                     if (input != null)
                     {
-                        if (input.Contains("MOVE@"))
+                        if (input.Contains("START:"))
+                        {
+                            input = input.Substring(5);
+                            string[] size = input.Split(',');
+                            currentForm.boardSizeSelectorPos[0] = int.Parse(size[0]);
+                            currentForm.boardSizeSelectorPos[1] = int.Parse(size[1]);
+                            currentForm.Invoke(new ReversiForm.startGameCallback(currentForm.startGame));   // Start game button laten "klikken"
+                        }
+                        else if (input.Contains("MOVE@"))
                         {
                             input = input.Substring(5);
                             string[] coordinates = input.Split(',');
@@ -101,36 +94,24 @@ namespace Reversi
                         }
                         else if (input.Equals("ENDGAME"))
                         {
-                            waitingString = "ENDGAME";
-                            runWorkers = false;
+                            runWorkers = false;         // Game ended, worker stoppen
                         }
                     }
                     else
                     {
-                        runWorkers = false;
+                        runWorkers = false;             // Null = worker stoppen
                     }
-
-                    Thread.Sleep(100);
                 }
                 catch (IOException)
                 {
-                    runServer = false;
+                    runWorkers = false;                 // IOException, netjes sluiten
                 }
             }
         }
 
-        private static void writerThread(StreamWriter writer)
+        public static void writeMessage(string message) // Bericht naar ander partij laten sturen
         {
-            while (runWorkers)
-            {
-                if (waitingString.Length != 0)
-                {
-                    writer.WriteLine(waitingString);
-                    Console.WriteLine("SERVER SEND: " + waitingString);
-                    waitingString = "";
-                }
-                Thread.Sleep(100);
-            }
+            writer.WriteLine(message);
         }
     }
 }

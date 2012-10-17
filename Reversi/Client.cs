@@ -11,68 +11,58 @@ namespace Reversi
 {
     class Client
     {
-        public static Boolean isConnected = false;
-        private static ReversiForm currentForm;
-        public static TcpClient tcpClient;
-        public static bool runClient = false;
+        public static Boolean isConnected = false;  // Client verbonden ja/nee
+        private static ReversiForm currentForm;     // Huidige form
+        public static TcpClient tcpClient;          // Daadwerkelijke client
+        public static bool runClient = false;       // Client draaien-toestemming
 
-        public static string waitingString = "";
+        private static StreamReader reader;
+        private static StreamWriter writer;
 
         public static void start(string hostName, ReversiForm form)
         {
-            if (isConnected)
+            if (isConnected)                        // Als is verbonden, nieuwe clients 
             {
                 return;
             }
 
-            currentForm = form;
+            currentForm = form; 
             tcpClient = new TcpClient();
-            tcpClient.Connect(hostName, 1337);
-
             try
             {
-                Stream stream = tcpClient.GetStream();
+                tcpClient.Connect(hostName, 1337);      // CLient verbinden met hostname op port leet
+         
+                currentForm.Invoke(new ReversiForm.startGameCallback(currentForm.startGame));   // start game button laten "klikken"
 
-                form.btStart.Invoke(new ReversiForm.startGameCallback(form.startGame));
-
-                onClientConnected(stream);
+                Stream stream = tcpClient.GetStream();  // Stream ophalen
+                onClientConnected(stream);              // Verder afhandelen
             }
             catch (SocketException)
             {
-
             }
-
         }
 
-        private static void onClientConnected(Stream stream)
+        private static void onClientConnected(Stream stream)        // Zelfde als onServerConnected
         {
             isConnected = true;
-            Console.WriteLine("CLIENT CONNECTED");
 
-            StreamReader reader = new StreamReader(stream);
-            StreamWriter writer = new StreamWriter(stream);
+            reader = new StreamReader(stream);
+            writer = new StreamWriter(stream);
             writer.AutoFlush = true;
 
-            waitingString = "";
+            read();
 
-            Thread readerT = new Thread(() => readerThread(reader));
-            readerT.Start();
-            Thread writerT = new Thread(() => writerThread(writer));
-            writerT.Start();
-
-            readerT.Join();
-            writerT.Join();
+            writeMessage("START:" + currentForm.boardSizeSelectorPos[0] + "," + currentForm.boardSizeSelectorPos[1]);   // Start-bericht naar server
 
             writer.Close();
             reader.Close();
             stream.Close();
             tcpClient.Close();
 
-            Console.WriteLine("CLIENT CLOSED");
             isConnected = false;
         }
 
-        private static void readerThread(StreamReader reader)
+        private static void read()                                  // Zelfde als in server
         {
             while (runClient)
             {
@@ -80,10 +70,16 @@ namespace Reversi
                 {
                     String input = reader.ReadLine();
 
-                    Console.WriteLine("SERVER INPUT: " + input);
                     if (input != null)
                     {
-                        if (input.Contains("MOVE@"))
+                        if (input.Contains("START:"))
+                        {
+                            input = input.Substring(5);
+                            string[] coordinates = input.Split(',');
+                            int x = int.Parse(coordinates[0]);
+                            int y = int.Parse(coordinates[1]);
+                        }
+                        else if (input.Contains("MOVE@"))
                         {
                             input = input.Substring(5);
                             string[] coordinates = input.Split(',');
@@ -101,8 +97,6 @@ namespace Reversi
                     {
                         runClient = false;
                     }
-
-                    Thread.Sleep(100);
                 }
                 catch (IOException)
                 {
@@ -111,18 +105,9 @@ namespace Reversi
             }
         }
 
-        private static void writerThread(StreamWriter writer)
+        public static void writeMessage(string message)     // Bericht naar andere partij sturen
         {
-            while (runClient)
-            {
-                if (waitingString.Length != 0)
-                {
-                    writer.WriteLine(waitingString);
-                    Console.WriteLine("SERVER SEND: " + waitingString);
-                    waitingString = "";
-                }
-                Thread.Sleep(100);
-            }
+            writer.WriteLine(message);
         }
     }
 }

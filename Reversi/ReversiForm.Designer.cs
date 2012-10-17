@@ -185,14 +185,14 @@
 
         #endregion
 
-        public System.Windows.Forms.Button btStart;
+        private System.Windows.Forms.Button btStart;
         private System.Windows.Forms.GroupBox gbPreGameControls;
         private System.Windows.Forms.GroupBox gbInGameControls;
         private System.Windows.Forms.Button btEndGame;
         private System.Windows.Forms.TrackBar tbHelp;
         private BufferedPanel pnBoardSize;
         private BufferedPanel pnScoreKeeper;
-        public BufferedPanel pnBoard;
+        private BufferedPanel pnBoard;
         private System.Windows.Forms.Button btConnect;
         private System.Windows.Forms.TextBox tbConnect;
         private System.Windows.Forms.Button btStartServer;

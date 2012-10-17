@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace Reversi
 {
-    public class BufferedPanel : Panel
+    public class BufferedPanel : Panel      //  Double-buffered panel om flikkeren te voorkomen
     {
         public BufferedPanel()
         {
