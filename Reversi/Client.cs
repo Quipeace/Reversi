@@ -50,9 +50,9 @@ namespace Reversi
             writer = new StreamWriter(stream);
             writer.AutoFlush = true;
 
-            read();
-
             writeMessage("START:" + currentForm.boardSizeSelectorPos[0] + "," + currentForm.boardSizeSelectorPos[1]);   // Start-bericht naar server
+            
+            read();
 
             writer.Close();
             reader.Close();
@@ -74,7 +74,7 @@ namespace Reversi
                     {
                         if (input.Contains("START:"))
                         {
-                            input = input.Substring(5);
+                            input = input.Substring(6);
                             string[] coordinates = input.Split(',');
                             int x = int.Parse(coordinates[0]);
                             int y = int.Parse(coordinates[1]);

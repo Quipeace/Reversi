@@ -54,6 +54,9 @@ namespace Reversi
             writer = new StreamWriter(stream);
             writer.AutoFlush = true;                    // Meteen schrijven
 
+
+            currentForm.Invoke(new ReversiForm.startGameCallback(currentForm.startGame));   // Start game button laten "klikken"
+
             read();                                     // Lees-loop
 
             writer.Close();                             // Netjes afsluiten
@@ -75,6 +78,7 @@ namespace Reversi
 
                     if (input != null)
                     {
+                        Console.WriteLine("INPUT: " + input);
                         if (input.Contains("START:"))
                         {
                             input = input.Substring(5);
