@@ -50,7 +50,7 @@
             this.btStart.Name = "btStart";
             this.btStart.Size = new System.Drawing.Size(81, 121);
             this.btStart.TabIndex = 3;
-            this.btStart.Text = "Start SinglePlayer";
+            this.btStart.Text = "Start Hotseat Multiplayer";
             this.btStart.UseVisualStyleBackColor = true;
             this.btStart.Click += new System.EventHandler(this.btStart_Click);
             // 
@@ -86,7 +86,7 @@
             this.btConnect.Name = "btConnect";
             this.btConnect.Size = new System.Drawing.Size(81, 121);
             this.btConnect.TabIndex = 6;
-            this.btConnect.Text = "Start MultiPlayer";
+            this.btConnect.Text = "Start Network Multiplayer";
             this.btConnect.UseVisualStyleBackColor = true;
             this.btConnect.Click += new System.EventHandler(this.btConnect_Click);
             // 
